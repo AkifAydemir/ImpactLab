@@ -1,0 +1,2 @@
+# v12 feature-completeness gate
+Feature completeness is now explicit data. v12 is not marked complete: repository extraction/build/test, end-to-end accessibility, solver verification/calibration and real external meshing integration remain gates before the completion signal can ever be emitted.

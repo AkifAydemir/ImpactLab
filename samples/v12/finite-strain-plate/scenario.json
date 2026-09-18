@@ -1,0 +1,14 @@
+{
+"documentType": "scenario",
+"schemaVersion": 5,
+"payload": {
+"name": "Finite strain plate sample",
+"continuum": {
+"mode": "FiniteStrainImplicitTransient",
+"advanced": {
+"enableFiniteStrain": true,
+"finiteStrainLawId": "neo-hookean"
+}
+}
+}
+}

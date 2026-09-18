@@ -1,0 +1,12 @@
+{
+"schemaVersion": 1,
+"minimumTrust": "Untrusted",
+"maximumPermissions": [
+"ReadProject",
+"ReadFiles"
+],
+"authenticatedIpc": true,
+"replayProtection": true,
+"windowsIsolation": "JobObject",
+"portableIsolation": "ProcessOnly"
+}

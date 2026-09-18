@@ -1,0 +1,15 @@
+{
+"documentType": "scenario",
+"schemaVersion": 4,
+"payload": {
+"name": "v11 nonlinear fixture",
+"continuum": {
+"mode": "ImplicitNonlinearTransient",
+"enableSelfContact": true,
+"implicitNonlinear": {
+"timeStepSeconds": 0.0001,
+"durationSeconds": 0.01
+}
+}
+}
+}

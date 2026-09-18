@@ -1,0 +1,36 @@
+namespace ImpactLab.Core.Backends;
+
+[Flags]
+public enum SimulationBackendCapabilities
+{
+    None = 0,
+    DeformableDynamics = 1 << 0,
+    RigidContact = 1 << 1,
+    DeformableContact = 1 << 2,
+    Damage = 1 << 3,
+    KinematicBoundaries = 1 << 4,
+    ReactionDiagnostics = 1 << 5,
+    ImportedGeometry = 1 << 6,
+    ParallelExecution = 1 << 7,
+    NativeAcceleration = 1 << 8,
+    GpuAcceleration = 1 << 9,
+    AdaptiveMeshing = 1 << 10,
+    RateTemperatureMaterials = 1 << 11,
+    CohesiveInterfaces = 1 << 12,
+    PerformanceTracing = 1 << 13,
+    TetrahedralContinuum = 1 << 14,
+    SparseLinearAlgebra = 1 << 15,
+    ThermalCoupling = 1 << 16,
+    SurfaceTriangleContact = 1 << 17,
+    TransientContinuum = 1 << 18,
+    ElastoPlasticity = 1 << 19,
+    ImplicitNonlinearTransient = 1 << 20,
+    SelfContact = 1 << 21,
+    LargeResultStorage = 1 << 22,
+    LargeStrain = 1 << 23,
+    AugmentedLagrangianContact = 1 << 24,
+    MortarContact = 1 << 25,
+    MonolithicThermoMechanical = 1 << 26,
+    ScalableIterativeSolvers = 1 << 27,
+    CadMeshingAdapter = 1 << 28,
+}

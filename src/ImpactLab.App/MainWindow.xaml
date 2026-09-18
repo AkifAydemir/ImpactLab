@@ -1,0 +1,567 @@
+<Window
+    x:Class="ImpactLab.App.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:ImpactLab.App.Controls"
+    Title="ImpactLab Engineering Workbench"
+    Width="1280"
+    Height="720"
+    MinWidth="1000"
+    MinHeight="600"
+    WindowStartupLocation="CenterScreen"
+    AutomationProperties.Name="ImpactLab engineering workbench"
+    KeyboardNavigation.TabNavigation="Cycle"
+>
+    <Grid Background="#11151B">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Border Background="#171D25" BorderBrush="#2A3442" BorderThickness="0,0,1,0">
+            <StackPanel Margin="14">
+                <TextBlock
+                    Text="IMPACTLAB"
+                    Foreground="White"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Margin="4,6,4,10"
+                />
+                <TextBlock
+                    Text="v1 portfolio release candidate"
+                    Foreground="#A9B8CA"
+                    FontSize="11"
+                    Margin="4,0,4,10"
+                />
+                <ListBox
+                    ItemsSource="{Binding Tabs}"
+                    SelectedItem="{Binding SelectedTab}"
+                    Background="Transparent"
+                    Foreground="#D8E0EA"
+                    BorderThickness="0"
+                    AutomationProperties.Name="Workspace navigation"
+                />
+                <Separator Margin="0,14" Background="#2A3442" />
+                <TextBlock Text="ENGINEERING FLOW" Foreground="#A9B8CA" FontWeight="SemiBold" />
+                <TextBlock Text="1. New / Open analysis" Foreground="#D8E0EA" Margin="0,6,0,0" />
+                <TextBlock
+                    Text="2. Setup: geometry, materials, loads, boundaries"
+                    TextWrapping="Wrap"
+                    Foreground="#D8E0EA"
+                />
+                <TextBlock
+                    Text="3. Solve: backend + run status"
+                    TextWrapping="Wrap"
+                    Foreground="#D8E0EA"
+                />
+                <TextBlock
+                    Text="4. Results: fields, timeline, probes, charts, report"
+                    TextWrapping="Wrap"
+                    Foreground="#D8E0EA"
+                />
+                <Separator Margin="0,14" Background="#2A3442" />
+                <TextBlock Text="CREDIBILITY" Foreground="#A9B8CA" FontWeight="SemiBold" />
+                <TextBlock
+                    Text="Release build is warning-free; automated solver, workflow and integrity verification is included in the repository."
+                    TextWrapping="Wrap"
+                    Foreground="#7FD1AE"
+                    Margin="0,6,0,0"
+                />
+            </StackPanel>
+        </Border>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border
+                Background="#151B23"
+                BorderBrush="#2A3442"
+                BorderThickness="0,0,0,1"
+                Padding="12"
+            >
+                <StackPanel>
+                    <WrapPanel VerticalAlignment="Center">
+                        <Button
+                            Content="New Analysis"
+                            Command="{Binding NewAnalysisCommand}"
+                            Margin="0,0,8,0"
+                            AutomationProperties.Name="New analysis"
+                        />
+                        <Button
+                            Content="Open Scenario..."
+                            Click="OpenScenario_Click"
+                            Margin="0,0,14,0"
+                            AutomationProperties.Name="Open scenario"
+                        />
+                        <TextBlock Text="Sample" VerticalAlignment="Center" Foreground="#D8E0EA" />
+                        <ComboBox
+                            Width="210"
+                            Margin="8,0,8,0"
+                            ItemsSource="{Binding SampleNames}"
+                            SelectedItem="{Binding SelectedSampleName}"
+                            AutomationProperties.Name="Built-in sample"
+                        />
+                        <Button
+                            Content="Load Sample"
+                            Command="{Binding LoadSampleCommand}"
+                            Margin="0,0,14,0"
+                        />
+                        <TextBlock Text="Backend" VerticalAlignment="Center" Foreground="#D8E0EA" />
+                        <ComboBox
+                            Width="270"
+                            Margin="8,0,8,0"
+                            ItemsSource="{Binding Backend.Backends}"
+                            SelectedItem="{Binding Backend.Selected}"
+                            DisplayMemberPath="DisplayName"
+                            AutomationProperties.Name="Simulation backend"
+                        />
+                        <Button
+                            Content="Solve"
+                            Command="{Binding RunScenarioCommand}"
+                            FontWeight="SemiBold"
+                            AutomationProperties.Name="Run current scenario"
+                        />
+                    </WrapPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
+                        <TextBlock
+                            Text="{Binding AnalysisStatus}"
+                            Foreground="#D8E0EA"
+                            TextWrapping="Wrap"
+                            AutomationProperties.LiveSetting="Polite"
+                        />
+                        <TextBlock Text="  |  " Foreground="#657386" />
+                        <TextBlock
+                            Text="{Binding Backend.VerificationState}"
+                            Foreground="#D8A95A"
+                            TextWrapping="Wrap"
+                        />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <TabControl
+                Grid.Row="1"
+                SelectedIndex="{Binding SelectedTabIndex}"
+                Background="#11151B"
+                BorderThickness="0"
+                AutomationProperties.Name="Engineering workspaces"
+            >
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Foreground" Value="#D8E0EA" />
+                        <Setter Property="HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" Foreground="#11151B" />
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                <TabItem Header="Simulation">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid
+                            DataContext="{Binding Simulation}"
+                            Margin="22"
+                            AutomationProperties.Name="Engineering viewport"
+                        >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="360" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock
+                                    Text="Quick Impact Sandbox"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                />
+                                <TextBlock
+                                    Text="Interactive explicit-lattice impact path with replay, heatmaps and engineering telemetry."
+                                    TextWrapping="Wrap"
+                                    Foreground="#A9B8CA"
+                                    Margin="0,4,0,12"
+                                />
+                                <TextBlock Text="Target geometry" />
+                                <ComboBox
+                                    ItemsSource="{Binding TargetGeometryKinds}"
+                                    SelectedItem="{Binding SelectedTargetGeometry}"
+                                />
+                                <TextBlock Text="Target material" />
+                                <ComboBox
+                                    ItemsSource="{Binding Materials}"
+                                    SelectedItem="{Binding SelectedTargetMaterial}"
+                                    DisplayMemberPath="DisplayName"
+                                />
+                                <TextBlock Text="Mesh cell size (mm)" />
+                                <TextBox Text="{Binding CellSizeMm,UpdateSourceTrigger=PropertyChanged}" />
+                                <CheckBox
+                                    Content="Front material layer"
+                                    IsChecked="{Binding UseFrontLayer}"
+                                    Margin="0,5"
+                                />
+                                <CheckBox
+                                    Content="Secondary backing part"
+                                    IsChecked="{Binding UseBackingPart}"
+                                    Margin="0,5"
+                                />
+                                <TextBlock Text="Impactor geometry" />
+                                <ComboBox
+                                    ItemsSource="{Binding ImpactorGeometryKinds}"
+                                    SelectedItem="{Binding SelectedImpactorGeometry}"
+                                />
+                                <TextBlock Text="Impactor material" />
+                                <ComboBox
+                                    ItemsSource="{Binding Materials}"
+                                    SelectedItem="{Binding SelectedImpactorMaterial}"
+                                    DisplayMemberPath="DisplayName"
+                                />
+                                <TextBlock Text="Impact speed (m/s)" />
+                                <TextBox Text="{Binding ImpactSpeedMps,UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Duration (ms)" />
+                                <TextBox Text="{Binding SimulationDurationMs,UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Text="Time step (us)" />
+                                <TextBox Text="{Binding TimeStepMicroseconds,UpdateSourceTrigger=PropertyChanged}" />
+                                <Button
+                                    Content="Run Quick Impact"
+                                    Command="{Binding RunCommand}"
+                                    Margin="0,10,0,4"
+                                    FontWeight="SemiBold"
+                                    AutomationProperties.Name="Run quick impact sandbox"
+                                />
+                                <TextBlock
+                                    Text="{Binding Status}"
+                                    TextWrapping="Wrap"
+                                    Foreground="#D8E0EA"
+                                    AutomationProperties.LiveSetting="Polite"
+                                />
+                            </StackPanel>
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Border
+                                    BorderBrush="#2A3442"
+                                    BorderThickness="1"
+                                    Background="#0F1319"
+                                    MinHeight="360"
+                                >
+                                    <Viewport3D
+                                        ClipToBounds="True"
+                                        AutomationProperties.Name="3D simulation replay"
+                                    >
+                                        <Viewport3D.Camera>
+                                            <PerspectiveCamera
+                                                Position="0.5,0.5,0.45"
+                                                LookDirection="-0.5,-0.5,-0.45"
+                                                UpDirection="0,0,1"
+                                                FieldOfView="45"
+                                            />
+                                        </Viewport3D.Camera>
+                                        <ModelVisual3D>
+                                            <ModelVisual3D.Content>
+                                                <AmbientLight Color="#8894A8" />
+                                            </ModelVisual3D.Content>
+                                        </ModelVisual3D>
+                                        <ModelVisual3D>
+                                            <ModelVisual3D.Content>
+                                                <DirectionalLight
+                                                    Color="#FFFFFF"
+                                                    Direction="-1,-1,-2"
+                                                />
+                                            </ModelVisual3D.Content>
+                                        </ModelVisual3D>
+                                        <ModelVisual3D Content="{Binding Scene}" />
+                                    </Viewport3D>
+                                </Border>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,12,0,6">
+                                    <TextBlock Text="Heatmap" VerticalAlignment="Center" />
+                                    <ComboBox
+                                        Width="150"
+                                        Margin="8,0,16,0"
+                                        ItemsSource="{Binding HeatmapModes}"
+                                        SelectedItem="{Binding SelectedHeatmap}"
+                                    />
+                                    <Button
+                                        Content="Previous"
+                                        Command="{Binding PreviousFrameCommand}"
+                                        Margin="0,0,8,0"
+                                    />
+                                    <Button Content="Next" Command="{Binding NextFrameCommand}" />
+                                    <TextBlock
+                                        Text="{Binding FrameTimeMs,StringFormat=  Time: {0:F3} ms}"
+                                        VerticalAlignment="Center"
+                                        Margin="12,0,0,0"
+                                    />
+                                </StackPanel>
+                                <UniformGrid Grid.Row="2" Columns="3" Margin="0,6,0,0">
+                                    <TextBlock Text="{Binding MaxDisplacementMm,StringFormat=Max displacement: {0:F3} mm}" />
+                                    <TextBlock Text="{Binding BrokenSpringCount,StringFormat=Broken links: {0}}" />
+                                    <TextBlock Text="{Binding PeakContactForceKn,StringFormat=Peak contact: {0:F2} kN}" />
+                                    <TextBlock Text="{Binding PeakContactCount,StringFormat=Peak contacts: {0}}" />
+                                    <TextBlock Text="{Binding ComputeMilliseconds,StringFormat=Compute: {0:F0} ms}" />
+                                    <TextBlock Text="{Binding TelemetrySampleCount,StringFormat=Telemetry samples: {0}}" />
+                                </UniformGrid>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
+                <TabItem Header="Geometry">
+                    <Grid DataContext="{Binding Geometry}" Margin="22">
+                        <StackPanel>
+                            <TextBlock Text="Geometry" FontSize="24" FontWeight="Bold" />
+                            <TextBlock
+                                Text="Parametric / transformed / boolean geometry authoring"
+                                Margin="0,8,0,0"
+                            />
+                            <TextBlock
+                                Text="Use Open Scenario or a built-in sample for the verified end-to-end solve path."
+                                TextWrapping="Wrap"
+                                Foreground="#A9B8CA"
+                                Margin="0,8,0,0"
+                            />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Import">
+                    <Grid DataContext="{Binding Import}" Margin="22">
+                        <TextBlock
+                            Text="OBJ / STL / CAD imported geometry"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Materials">
+                    <Grid DataContext="{Binding Materials}" Margin="22">
+                        <TextBlock
+                            Text="Material profiles / constitutive laws"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Loads">
+                    <Grid DataContext="{Binding Loads}" Margin="22">
+                        <TextBlock Text="Load cases" FontSize="24" FontWeight="Bold" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Boundaries">
+                    <Grid DataContext="{Binding Boundaries}" Margin="22">
+                        <TextBlock
+                            Text="Boundary conditions / reactions"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Experiments">
+                    <Grid DataContext="{Binding Experiments}" Margin="22">
+                        <TextBlock
+                            Text="Parallel / resumable experiments"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Calibration">
+                    <Grid DataContext="{Binding Calibration}" Margin="22">
+                        <TextBlock Text="Calibration studies" FontSize="24" FontWeight="Bold" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Verification">
+                    <Grid DataContext="{Binding Verification}" Margin="22">
+                        <StackPanel>
+                            <TextBlock Text="Verification" FontSize="24" FontWeight="Bold" />
+                            <TextBlock
+                                Text="Compiled numerical benchmarks and portable integrity checks are reported separately."
+                                Foreground="#A9B8CA"
+                                Margin="0,8,0,0"
+                            />
+                            <TextBlock Text="{Binding BenchmarkSummary}" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Post-processing">
+                    <Grid DataContext="{Binding PostProcessing}" Margin="22">
+                        <StackPanel>
+                            <TextBlock
+                                Text="Probes / energy / sections"
+                                FontSize="24"
+                                FontWeight="Bold"
+                            />
+                            <TextBlock Text="Probe series" Margin="0,12,0,4" />
+                            <ListBox ItemsSource="{Binding Probes}" MinHeight="120" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Results">
+                    <Grid Margin="22">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Results Explorer" FontSize="24" FontWeight="Bold" />
+                        <Grid Grid.Row="1" Margin="0,12,0,12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Quantity" VerticalAlignment="Center" />
+                                    <ComboBox
+                                        Width="220"
+                                        Margin="8,0,16,0"
+                                        ItemsSource="{Binding Results.Fields}"
+                                        SelectedItem="{Binding Results.Field}"
+                                        AutomationProperties.Name="Result field"
+                                    />
+                                    <TextBlock Text="Frame" VerticalAlignment="Center" />
+                                    <TextBox
+                                        Width="80"
+                                        Margin="8,0,0,0"
+                                        Text="{Binding Results.FrameIndex,UpdateSourceTrigger=PropertyChanged}"
+                                        AutomationProperties.Name="Result frame"
+                                    />
+                                </StackPanel>
+                                <DataGrid
+                                    ItemsSource="{Binding Results.Rows}"
+                                    AutoGenerateColumns="True"
+                                    IsReadOnly="True"
+                                    CanUserAddRows="False"
+                                    Background="#1D2733"
+                                    Foreground="#E4EBF3"
+                                    RowBackground="#1D2733"
+                                    AlternatingRowBackground="#253343"
+                                    BorderBrush="#3A4B60"
+                                    GridLinesVisibility="Horizontal"
+                                    HorizontalGridLinesBrush="#344559"
+                                    FontSize="13"
+                                    Margin="0,12,12,0"
+                                >
+                                    <DataGrid.ColumnHeaderStyle>
+                                        <Style TargetType="DataGridColumnHeader">
+                                            <Setter Property="Background" Value="#28384B" />
+                                            <Setter Property="Foreground" Value="#F1F5FA" />
+                                            <Setter Property="BorderBrush" Value="#3A4B60" />
+                                            <Setter Property="Padding" Value="7,5" />
+                                        </Style>
+                                    </DataGrid.ColumnHeaderStyle>
+                                </DataGrid>
+                            </StackPanel>
+                            <Border
+                                Grid.Column="1"
+                                BorderBrush="#2A3442"
+                                BorderThickness="1"
+                                Padding="14"
+                                Width="360"
+                            >
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger
+                                                Binding="{Binding LargeResults.IsAttached}"
+                                                Value="True"
+                                            >
+                                                <Setter Property="Visibility" Value="Visible" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <StackPanel>
+                                    <TextBlock
+                                        Text="Large / out-of-core result stream"
+                                        FontWeight="SemiBold"
+                                    />
+                                    <TextBlock Text="Field" Margin="0,10,0,0" />
+                                    <TextBox Text="{Binding LargeResults.FieldId,UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="Frame" />
+                                    <TextBox Text="{Binding LargeResults.FrameIndex,UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock
+                                        Text="{Binding LargeResults.Status}"
+                                        TextWrapping="Wrap"
+                                        AutomationProperties.LiveSetting="Polite"
+                                    />
+                                    <TextBlock Text="{Binding LargeResults.Minimum,StringFormat=Minimum: {0:G5}}" />
+                                    <TextBlock Text="{Binding LargeResults.Maximum,StringFormat=Maximum: {0:G5}}" />
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+                        <TextBlock
+                            Grid.Row="2"
+                            Text="Run completion transitions here automatically for shell-level scenarios. Use Post-processing for probes/sections, Charts for plots and Reports for export workflows."
+                            TextWrapping="Wrap"
+                            Foreground="#A9B8CA"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Charts">
+                    <Grid DataContext="{Binding Charts}" Margin="18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <TextBlock
+                            Text="Interactive Engineering Chart"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                        <controls:EngineeringChartControl
+                            Grid.Row="1"
+                            Document="{Binding Document}"
+                            Margin="0,12,0,0"
+                            AutomationProperties.Name="Engineering result chart"
+                        />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Runs">
+                    <Grid DataContext="{Binding Runs}" Margin="22">
+                        <TextBlock Text="Persistent run archive" FontSize="24" FontWeight="Bold" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Reports">
+                    <Grid DataContext="{Binding Reports}" Margin="22">
+                        <TextBlock Text="Engineering reports" FontSize="24" FontWeight="Bold" />
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Extensions">
+                    <Grid
+                        DataContext="{Binding Extensions}"
+                        Margin="22"
+                        AutomationProperties.Name="Extension security workspace"
+                    >
+                        <StackPanel>
+                            <TextBlock
+                                Text="Extension / plugin security"
+                                FontSize="24"
+                                FontWeight="Bold"
+                            />
+                            <TextBlock
+                                Text="Untrusted packages use authenticated isolated-process hosting. Trusted in-process loading requires an explicit security plan."
+                                TextWrapping="Wrap"
+                                Margin="0,12,0,0"
+                            />
+                            <TextBlock
+                                Text="{Binding Status}"
+                                Margin="0,8,0,0"
+                                AutomationProperties.LiveSetting="Polite"
+                            />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Diagnostics">
+                    <Grid DataContext="{Binding Diagnostics}" Margin="22">
+                        <TextBlock
+                            Text="Performance / numerical diagnostics"
+                            FontSize="24"
+                            FontWeight="Bold"
+                        />
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Window>

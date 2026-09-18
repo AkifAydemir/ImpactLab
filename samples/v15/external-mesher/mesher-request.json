@@ -1,0 +1,56 @@
+{
+"schemaVersion": 1,
+"sourceFormat": "neutral-fixture",
+"vertices": [
+{
+"id": "00000000-0000-0000-0000-000000000001",
+"x": 0.0,
+"y": 0.0,
+"z": 0.0,
+"toleranceMeters": 1e-09
+},
+{
+"id": "00000000-0000-0000-0000-000000000002",
+"x": 1.0,
+"y": 0.0,
+"z": 0.0,
+"toleranceMeters": 1e-09
+},
+{
+"id": "00000000-0000-0000-0000-000000000003",
+"x": 0.0,
+"y": 1.0,
+"z": 0.0,
+"toleranceMeters": 1e-09
+},
+{
+"id": "00000000-0000-0000-0000-000000000004",
+"x": 0.0,
+"y": 0.0,
+"z": 1.0,
+"toleranceMeters": 1e-09
+}
+],
+"edges": [],
+"faces": [],
+"bodies": [],
+"meshing": {
+"targetSizeMeters": 0.25,
+"minimumSizeMeters": 0.05,
+"maximumSizeMeters": 0.5,
+"curvatureFactor": 0.5,
+"growthRate": 1.4,
+"optimizeSlivers": true,
+"preserveBoundary": true,
+"boundaryLayer": {
+"enabled": false,
+"layers": 3,
+"firstLayerThicknessMeters": 0.001,
+"growthRate": 1.25,
+"partIds": null
+}
+},
+"options": {
+"fixture": "v15"
+}
+}

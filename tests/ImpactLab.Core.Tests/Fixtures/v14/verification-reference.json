@@ -1,0 +1,10 @@
+{
+"schemaVersion": 1,
+"benchmarks": [
+{"id":"finite-strain.pure-rotation","reference":"analytical","required":true},
+{"id":"finite-strain.neo-hookean-uniaxial","reference":"closed-form","required":true},
+{"id":"plasticity.j2-transition","reference":"constitutive-transition","required":true},
+{"id":"contact.augmented-open-close","reference":"complementarity","required":true},
+{"id":"thermal.convection-balance","reference":"boundary-assembly","required":true}
+]
+}

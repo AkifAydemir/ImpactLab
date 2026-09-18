@@ -1,0 +1,96 @@
+namespace ImpactLab.Core.Finalization;
+
+public static class SourceCoverageCatalog
+{
+    public static SourceCoverageMatrix CreateV15()
+    {
+        var m = new SourceCoverageMatrix();
+        Add(
+            "cad-boundary",
+            SourceArtifactKind.ArchitectureDocument,
+            "docs/architecture/v12-cad-meshing-boundary.md",
+            FeatureArea.Meshing
+        );
+        Add(
+            "cad-process-adapter",
+            SourceArtifactKind.ArchitectureDocument,
+            "docs/architecture/v15-external-mesher-and-report-packages.md",
+            FeatureArea.Meshing
+        );
+        Add(
+            "cad-sample-request",
+            SourceArtifactKind.SampleAdapter,
+            "samples/v15/external-mesher/mesher-request.json",
+            FeatureArea.Meshing
+        );
+        Add(
+            "cad-sample-result",
+            SourceArtifactKind.SampleAdapter,
+            "samples/v15/external-mesher/mesher-result.json",
+            FeatureArea.Meshing
+        );
+        Add(
+            "cad-sample-tool",
+            SourceArtifactKind.SampleAdapter,
+            "tools/ImpactLab.MeshAdapter.Sample/Program.cs",
+            FeatureArea.Meshing
+        );
+        Add(
+            "report-source",
+            SourceArtifactKind.GoldenReport,
+            "samples/v15/report-golden/report.json",
+            FeatureArea.Reporting
+        );
+        Add(
+            "report-markdown",
+            SourceArtifactKind.GoldenReport,
+            "samples/v15/report-golden/report.md",
+            FeatureArea.Reporting
+        );
+        Add(
+            "report-html",
+            SourceArtifactKind.GoldenReport,
+            "samples/v15/report-golden/report.html",
+            FeatureArea.Reporting
+        );
+        Add(
+            "report-csv",
+            SourceArtifactKind.GoldenReport,
+            "samples/v15/report-golden/metrics.csv",
+            FeatureArea.Reporting
+        );
+        Add(
+            "report-manifest",
+            SourceArtifactKind.GoldenReport,
+            "samples/v15/report-golden/manifest.json",
+            FeatureArea.Reporting
+        );
+        Add(
+            "migration-v9-scenario",
+            SourceArtifactKind.MigrationFixture,
+            "tests/ImpactLab.Core.Tests/Fixtures/v9/scenario-v2.json",
+            FeatureArea.Persistence
+        );
+        Add(
+            "migration-v12-scenario",
+            SourceArtifactKind.MigrationFixture,
+            "tests/ImpactLab.Core.Tests/Fixtures/v12/scenario-v5.json",
+            FeatureArea.Persistence
+        );
+        Add(
+            "verification-v14",
+            SourceArtifactKind.VerificationDocument,
+            "docs/verification/v14-source-verification.md",
+            FeatureArea.FiniteStrain
+        );
+        Add(
+            "sample-catalog",
+            SourceArtifactKind.ArchitectureDocument,
+            "docs/samples/v15-source-sample-catalog.md",
+            FeatureArea.Documentation
+        );
+        return m;
+        void Add(string id, SourceArtifactKind kind, string path, FeatureArea area) =>
+            m.Add(new(id, kind, path, area));
+    }
+}

@@ -1,0 +1,49 @@
+{
+"schemaVersion": 1,
+"success": true,
+"nodes": [
+{
+"id": 0,
+"x": 0.0,
+"y": 0.0,
+"z": 0.0,
+"partId": "sample-cad"
+},
+{
+"id": 1,
+"x": 1.0,
+"y": 0.0,
+"z": 0.0,
+"partId": "sample-cad"
+},
+{
+"id": 2,
+"x": 0.0,
+"y": 1.0,
+"z": 0.0,
+"partId": "sample-cad"
+},
+{
+"id": 3,
+"x": 0.0,
+"y": 0.0,
+"z": 1.0,
+"partId": "sample-cad"
+}
+],
+"elements": [
+{
+"id": 0,
+"a": 0,
+"b": 1,
+"c": 2,
+"d": 3,
+"partId": "sample-cad"
+}
+],
+"diagnostics": {
+"adapter": "ImpactLab.MeshAdapter.Sample",
+"purpose": "wire-contract fixture"
+},
+"error": null
+}

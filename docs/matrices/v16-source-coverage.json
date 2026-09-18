@@ -1,0 +1,66 @@
+{
+"version": 16,
+"model": "compact-history-current-snapshot",
+"sourceFeatureReview": "ready-for-extraction",
+"requirements": [
+{
+"id": "external-mesher-sample",
+"status": "canonical",
+"paths": [
+"tools/ImpactLab.MeshAdapter.Sample/ImpactLab.MeshAdapter.Sample.csproj",
+"tools/ImpactLab.MeshAdapter.Sample/Program.cs",
+"samples/v15/external-mesher/mesher-request.json",
+"samples/v15/external-mesher/mesher-result.json"
+]
+},
+{
+"id": "report-golden-package",
+"status": "canonical",
+"paths": [
+"samples/v15/report-golden/report.json",
+"samples/v15/report-golden/report.md",
+"samples/v15/report-golden/report.html",
+"samples/v15/report-golden/metrics.csv",
+"samples/v15/report-golden/manifest.json"
+]
+},
+{
+"id": "authenticated-extension-host",
+"status": "canonical-unexecuted",
+"paths": [
+"src/ImpactLab.ExtensionHost/ImpactLab.ExtensionHost.csproj",
+"src/ImpactLab.ExtensionHost/Program.cs",
+"src/ImpactLab.Core/Extensions/Security/ExtensionIpcAuthenticator.cs",
+"src/ImpactLab.Core/Extensions/Hosting/ExtensionProcessLauncher.cs",
+"samples/v16/extension-host-policy.json"
+]
+},
+{
+"id": "large-result-accessibility",
+"status": "canonical-unexecuted",
+"paths": [
+"src/ImpactLab.App/Visualization/LargeResultWorkspaceViewModel.cs",
+"src/ImpactLab.App/Authoring/ViewportPickingCoordinator.cs",
+"src/ImpactLab.App/Visualization/ResultSurfaceDecimator.cs",
+"src/ImpactLab.App/Accessibility/AccessibilityWorkflowCatalog.cs",
+"samples/v16/accessibility-workflow.json"
+]
+},
+{
+"id": "migration-fixtures",
+"status": "canonical-unexecuted",
+"paths": [
+"tests/ImpactLab.Core.Tests/Fixtures/v9/scenario-v2.json",
+"tests/ImpactLab.Core.Tests/Fixtures/v12/scenario-v5.json"
+]
+},
+{
+"id": "source-feature-review",
+"status": "ready-for-extraction",
+"paths": [
+"docs/finalization/v16-source-feature-review.md",
+"src/ImpactLab.Core/Finalization/FeatureCompletenessReview.cs"
+]
+}
+]
+}

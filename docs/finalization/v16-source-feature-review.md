@@ -1,0 +1,3 @@
+# v16 source-feature completeness review
+The v16 review distinguishes **source feature completeness** from **release completion**. Every required feature area now has canonical source or an explicitly modeled external dependency; no required area remains `Planned`. This permits the next phase to extract the repository and begin actual compilation/test repair.
+Release completion is still blocked by execution evidence: build/tests, numerical verification/calibration, worker/process behavior, large-result performance, migration round trips, external CAD/tetra binaries, extension security runtime checks and accessibility walkthroughs. Therefore v16 does not emit the project completion signal.

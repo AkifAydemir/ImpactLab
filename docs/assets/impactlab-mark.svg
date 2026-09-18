@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-labelledby="title desc">
+  <title id="title">ImpactLab mark</title>
+  <desc id="desc">Two meshed bodies meeting at an impact front.</desc>
+  <defs>
+    <linearGradient id="impact" x1="26" y1="31" x2="137" y2="133" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#EF4444"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="148" height="148" rx="34" fill="#190D0D"/>
+  <path d="m27 53 42-20v94L27 107Zm106 0L91 33v94l42-20Z" fill="#32181A" stroke="url(#impact)" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M27 53 69 80l-42 27M69 33 27 107M133 53 91 80l42 27M91 33l42 74" fill="none" stroke="#FCA5A5" stroke-width="3" opacity=".8"/>
+  <path d="m80 48-7 22-12 10 12 10 7 22 7-22 12-10-12-10Z" fill="#FEF3C7" stroke="#F59E0B" stroke-width="4" stroke-linejoin="round"/>
+</svg>

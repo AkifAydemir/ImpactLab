@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "generatedUtc": "2026-09-06T15:32:58Z",
+  "overallStatus": "environment-blocked",
+  "dotnet": {
+    "available": false,
+    "version": null
+  },
+  "stages": [{"name":"sdk","status":"environment-blocked","exitCode":127,"summary":".NET SDK executable was not found on PATH."}],
+  "error": null
+}

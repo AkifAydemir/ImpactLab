@@ -1,0 +1,11 @@
+{
+"documentType": "scenario",
+"schemaVersion": 5,
+"payload": {
+"name": "Monolithic thermo-mechanical block",
+"continuum": {
+"mode": "MonolithicThermoMechanical",
+"enableThermalCoupling": true
+}
+}
+}

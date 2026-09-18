@@ -1,0 +1,8 @@
+{
+"documentType": "experiment",
+"schemaVersion": 4,
+"payload": {
+"sensitivityMethod": "Sobol",
+"optimizerMethod": "Bayesian"
+}
+}

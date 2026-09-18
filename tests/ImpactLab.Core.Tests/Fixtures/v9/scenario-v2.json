@@ -1,0 +1,1 @@
+{"schemaVersion":2,"kind":"scenario","payload":{"id":"golden-v9","name":"Golden continuum block","continuum":{"mode":"LinearStatic","targetEdgeLengthMeters":0.02},"thermal":{"enabled":false}}}

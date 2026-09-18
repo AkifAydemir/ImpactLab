@@ -1,0 +1,2 @@
+# v12 monolithic thermo-mechanical coupling
+The coupled Newton boundary uses four unknowns per node (ux, uy, uz, T) and explicit Kuu/KuT/KTu/KTT blocks. Thermal expansion, dissipation and energy ledgers are visible terms instead of hidden staggered updates.

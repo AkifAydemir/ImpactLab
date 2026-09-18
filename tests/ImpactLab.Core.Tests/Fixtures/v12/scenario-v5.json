@@ -1,0 +1,15 @@
+{
+"documentType": "scenario",
+"schemaVersion": 5,
+"payload": {
+"name": "v12 finite-strain fixture",
+"continuum": {
+"mode": "FiniteStrainImplicitTransient",
+"advanced": {
+"enableFiniteStrain": true,
+"finiteStrainLawId": "finite-j2",
+"contactMethod": "AugmentedLagrangian"
+}
+}
+}
+}

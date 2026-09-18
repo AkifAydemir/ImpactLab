@@ -1,0 +1,2 @@
+# v11 result field/storage boundary
+Result fields are registered by stable ids, association and value type. Large time histories can be stored independently of in-memory frame models through chunked binary field stores, codecs and an application-side LRU frame cache.

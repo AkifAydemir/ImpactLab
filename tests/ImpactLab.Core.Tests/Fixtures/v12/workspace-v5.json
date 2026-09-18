@@ -1,0 +1,13 @@
+{
+"documentType": "workspace",
+"schemaVersion": 5,
+"payload": {
+"resultStreaming": {
+"cacheFrames": 12,
+"lod": "Auto"
+},
+"layout": {
+"name": "Engineering"
+}
+}
+}

@@ -1,0 +1,54 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.Core", "src\ImpactLab.Core\ImpactLab.Core.csproj", "{2F317A8E-0F25-4D7B-8D67-2044453850A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.App", "src\ImpactLab.App\ImpactLab.App.csproj", "{8F55E3DB-AB95-4417-B9DF-AF05845E0D65}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.Core.Tests", "tests\ImpactLab.Core.Tests\ImpactLab.Core.Tests.csproj", "{A0B62735-2088-45A6-A99D-94B1430E7E2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.Worker", "src\ImpactLab.Worker\ImpactLab.Worker.csproj", "{5A4C1C0B-37A8-4FC6-BD6B-30DA95F92A14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.MeshAdapter.Sample", "tools\ImpactLab.MeshAdapter.Sample\ImpactLab.MeshAdapter.Sample.csproj", "{4C6E19C7-5DF9-4D13-AF15-1E0F33D8A515}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.ExtensionHost", "src\ImpactLab.ExtensionHost\ImpactLab.ExtensionHost.csproj", "{B1D4A7F2-0E3E-4C8D-9C5B-61E4D2A9F716}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImpactLab.Extractor", "tools\ImpactLab.Extractor\ImpactLab.Extractor.csproj", "{A4F198E0-4C27-41F0-9533-CBADC19BA943}"
+EndProject
+Global
+GlobalSection(SolutionConfigurationPlatforms) = preSolution
+Debug|Any CPU = Debug|Any CPU
+Release|Any CPU = Release|Any CPU
+EndGlobalSection
+GlobalSection(ProjectConfigurationPlatforms) = postSolution
+{5A4C1C0B-37A8-4FC6-BD6B-30DA95F92A14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{5A4C1C0B-37A8-4FC6-BD6B-30DA95F92A14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{5A4C1C0B-37A8-4FC6-BD6B-30DA95F92A14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{5A4C1C0B-37A8-4FC6-BD6B-30DA95F92A14}.Release|Any CPU.Build.0 = Release|Any CPU
+{2F317A8E-0F25-4D7B-8D67-2044453850A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{2F317A8E-0F25-4D7B-8D67-2044453850A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{2F317A8E-0F25-4D7B-8D67-2044453850A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{2F317A8E-0F25-4D7B-8D67-2044453850A1}.Release|Any CPU.Build.0 = Release|Any CPU
+{8F55E3DB-AB95-4417-B9DF-AF05845E0D65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{8F55E3DB-AB95-4417-B9DF-AF05845E0D65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{8F55E3DB-AB95-4417-B9DF-AF05845E0D65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{8F55E3DB-AB95-4417-B9DF-AF05845E0D65}.Release|Any CPU.Build.0 = Release|Any CPU
+{A0B62735-2088-45A6-A99D-94B1430E7E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{A0B62735-2088-45A6-A99D-94B1430E7E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{A0B62735-2088-45A6-A99D-94B1430E7E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{A0B62735-2088-45A6-A99D-94B1430E7E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+{4C6E19C7-5DF9-4D13-AF15-1E0F33D8A515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{4C6E19C7-5DF9-4D13-AF15-1E0F33D8A515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{4C6E19C7-5DF9-4D13-AF15-1E0F33D8A515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{4C6E19C7-5DF9-4D13-AF15-1E0F33D8A515}.Release|Any CPU.Build.0 = Release|Any CPU
+{B1D4A7F2-0E3E-4C8D-9C5B-61E4D2A9F716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{B1D4A7F2-0E3E-4C8D-9C5B-61E4D2A9F716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{B1D4A7F2-0E3E-4C8D-9C5B-61E4D2A9F716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{B1D4A7F2-0E3E-4C8D-9C5B-61E4D2A9F716}.Release|Any CPU.Build.0 = Release|Any CPU
+{A4F198E0-4C27-41F0-9533-CBADC19BA943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+{A4F198E0-4C27-41F0-9533-CBADC19BA943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+{A4F198E0-4C27-41F0-9533-CBADC19BA943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+{A4F198E0-4C27-41F0-9533-CBADC19BA943}.Release|Any CPU.Build.0 = Release|Any CPU
+EndGlobalSection
+EndGlobal

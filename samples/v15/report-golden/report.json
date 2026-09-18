@@ -1,0 +1,43 @@
+{
+"title": "ImpactLab Golden Engineering Report",
+"scenarioName": "v15-report-fixture",
+"backend": "tetra-continuum-v2",
+"generatedUtc": "2026-08-31T00:00:00.0000000+00:00",
+"sections": [
+{
+"title": "Run summary",
+"narrative": "Deterministic golden report fixture.",
+"metrics": [
+{
+"name": "Domain",
+"value": "Continuum",
+"unit": null
+},
+{
+"name": "Maximum displacement",
+"value": "0.00125",
+"unit": "m"
+}
+],
+"tables": [
+{
+"title": "Checks",
+"columns": [
+"Name",
+"Status"
+],
+"rows": [
+[
+"Manifest",
+"Ready"
+],
+[
+"Golden export",
+"Ready"
+]
+]
+}
+]
+}
+]
+}

@@ -1,0 +1,2 @@
+# Process-isolated experiments
+Experiment workers communicate through a versioned JSON-line protocol. The parent process owns scheduling and quotas; workers own one case execution and artifact emission. This keeps expensive or unstable numerical backends outside the WPF process and provides a future boundary for native/GPU workers.

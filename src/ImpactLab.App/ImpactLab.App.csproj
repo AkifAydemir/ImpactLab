@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RootNamespace>ImpactLab.App</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>ImpactLab</Product>
+    <AssemblyTitle>ImpactLab Engineering Simulation Workbench</AssemblyTitle>
+    <Description>Local engineering workbench for impact, continuum, thermal and experiment workflows.</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImpactLab.Core\ImpactLab.Core.csproj" />
+  </ItemGroup>
+</Project>

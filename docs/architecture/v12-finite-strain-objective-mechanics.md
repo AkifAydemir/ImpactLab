@@ -1,0 +1,2 @@
+# v12 finite-strain/objective mechanics
+ImpactLab now separates deformation-gradient kinematics, objective stress handling, finite-strain state and constitutive updates. Updated-Lagrangian assembly and algorithmic tangents remain backend-facing contracts so the small-strain continuum path stays available. The finite-strain implementation is an engineering workbench feature pending repository verification and calibration.

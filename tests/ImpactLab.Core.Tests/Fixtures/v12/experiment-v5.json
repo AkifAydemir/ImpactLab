@@ -1,0 +1,11 @@
+{
+"documentType": "experiment",
+"schemaVersion": 5,
+"payload": {
+"multiObjective": true,
+"saltelli": {
+"baseSamples": 128,
+"includeSecondOrder": false
+}
+}
+}

@@ -1,0 +1,10 @@
+{
+"documentType": "experiment",
+"schemaVersion": 3,
+"payload": {
+"executionMode": "ProcessIsolated",
+"workerQuota": {
+"maxWorkingSetMb": 4096
+}
+}
+}

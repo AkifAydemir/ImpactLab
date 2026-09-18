@@ -1,0 +1,24 @@
+{
+"schemaVersion": 1,
+"canonicalInput": "ImpactLab_v16.docx",
+"phase": "extraction-build-repair",
+"extraction": {
+"sourceSection": "7. Current Canonical Source Snapshot",
+"files": 1204,
+"expectedAggregateSha256": "f2e01e4b0c507942992ba6f938d5855d177c5987f08d3c2f88fd3ab168e06eee",
+"actualAggregateSha256": "f2e01e4b0c507942992ba6f938d5855d177c5987f08d3c2f88fd3ab168e06eee",
+"matched": true
+},
+"buildAttempt": {
+"attempted": true,
+"executedBuild": false,
+"status": "environment-blocked",
+"reason": ".NET SDK was not installed in the development container and the container could not download the official .NET 8 installer because outbound download/DNS access was unavailable."
+},
+"staticRepair": {
+"auditStatus": "passed",
+"issues": 0,
+"warnings": 0,
+"note": "Static compile-readiness repair is not a substitute for dotnet build or dotnet test evidence."
+}
+}

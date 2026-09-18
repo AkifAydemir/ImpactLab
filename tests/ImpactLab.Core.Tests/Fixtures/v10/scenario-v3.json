@@ -1,0 +1,13 @@
+{
+"documentType": "scenario",
+"schemaVersion": 3,
+"payload": {
+"name": "v10 fixture",
+"continuumDynamic": {
+"enabled": true,
+"integrator": "CentralDifference",
+"timeStepSeconds": 1e-05,
+"durationSeconds": 0.001
+}
+}
+}

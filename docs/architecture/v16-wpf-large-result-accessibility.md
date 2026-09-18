@@ -1,0 +1,4 @@
+# v16 large-result and accessibility workflow
+Viewport selection is coordinated through replaceable picking backends. A GPU ID-buffer readback bridge can be supplied by a hardware renderer; the canonical CPU ray picker remains a deterministic fallback. Selection updates feed accessibility announcements instead of being a purely visual side effect.
+Continuum surfaces can be deterministically decimated to a configured triangle budget while retaining representative triangles per part. Out-of-core fields load through the async result-store contract and neighborhood frames are prefetched with bounded concurrency.
+Workspace layout persistence is schema-versioned and recoverable. The accessibility workflow catalog, keyboard traversal service, live-region announcements and WPF AutomationProperties provide a source-level end-to-end keyboard/screen-reader path ready for compiled UI verification.

@@ -1,0 +1,2 @@
+# v12 advanced contact
+Contact gains persistent multipliers, augmentation policy, mortar-style projection/quadrature, edge-edge candidates and explicit stick/slip state. Broad phase, manifold construction, constraint enforcement and Jacobian assembly remain independent stages to support future algorithm replacement.

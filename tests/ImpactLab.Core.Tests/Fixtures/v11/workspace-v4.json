@@ -1,0 +1,11 @@
+{
+"documentType": "workspace",
+"schemaVersion": 4,
+"payload": {
+"layout": {
+"name": "Default",
+"activeWorkspaceId": "simulation"
+},
+"resultFieldId": "stress"
+}
+}

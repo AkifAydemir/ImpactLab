@@ -1,0 +1,2 @@
+# v12 CAD/meshing boundary
+CAD topology, healing reports, local sizing and external tetra mesher requests are canonical contracts. ImpactLab does not claim to implement a production CAD kernel or tetrahedralizer in managed code; approved external adapters can populate the existing TetrahedralMesh domain.

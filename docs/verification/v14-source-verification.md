@@ -1,0 +1,3 @@
+# v14 source verification milestone
+v14 adds a deterministic source-level benchmark boundary for finite-strain kinematics, hyperelastic response, J2 transition behavior, augmented contact and thermal boundary assembly. These benchmarks are not evidence of predictive validation until the extracted repository builds and the suites execute successfully on supported runtimes.
+The same milestone turns process isolation into an explicit executable product boundary through `ImpactLab.Worker`. Protocol v2 carries hello/heartbeat/terminal-response envelopes, wall-time quotas, metric payloads and SHA-256 artifact references. Parent orchestration remains responsible for scheduling and policy.

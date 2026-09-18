@@ -1,0 +1,2 @@
+# v11 extension trust
+Extension manifests declare permissions and API compatibility. Trust policy, signature/hash verification, audit logging and process-host contracts are kept outside numerical code. This is defense-in-depth scaffolding, not an OS security sandbox claim.

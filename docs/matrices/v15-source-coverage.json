@@ -1,0 +1,35 @@
+{
+"version": 15,
+"model": "compact-history-current-snapshot",
+"requirements": [
+{
+"id": "external-mesher-sample",
+"status": "canonical",
+"paths": [
+"tools/ImpactLab.MeshAdapter.Sample/ImpactLab.MeshAdapter.Sample.csproj",
+"tools/ImpactLab.MeshAdapter.Sample/Program.cs",
+"samples/v15/external-mesher/mesher-request.json",
+"samples/v15/external-mesher/mesher-result.json"
+]
+},
+{
+"id": "report-golden-package",
+"status": "canonical",
+"paths": [
+"samples/v15/report-golden/report.json",
+"samples/v15/report-golden/report.md",
+"samples/v15/report-golden/report.html",
+"samples/v15/report-golden/metrics.csv",
+"samples/v15/report-golden/manifest.json"
+]
+},
+{
+"id": "migration-fixtures",
+"status": "canonical-unexecuted",
+"paths": [
+"tests/ImpactLab.Core.Tests/Fixtures/v9/scenario-v2.json",
+"tests/ImpactLab.Core.Tests/Fixtures/v12/scenario-v5.json"
+]
+}
+]
+}

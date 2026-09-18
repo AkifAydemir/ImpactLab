@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "reportId": "08591e4d22a56b2f144367d9",
+  "templateId": "engineering-standard",
+  "scenarioFingerprint": "fixture-sha",
+  "backendId": "tetra-continuum-v2",
+  "softwareVersion": "v15",
+  "generatedUtc": "2026-08-31T00:00:00+00:00",
+  "files": [
+    {
+      "path": "metrics.csv",
+      "mediaType": "text/csv",
+      "bytes": 114,
+      "sha256": "05e1c0fee70cf8afdf429eb99db175a9b9ae49759884541a426424d092e8f3e4"
+    },
+    {
+      "path": "report.html",
+      "mediaType": "text/html",
+      "bytes": 814,
+      "sha256": "b894885e2604e6c770121f41836dfc22b0ee993233b9895a46737b24013f8243"
+    },
+    {
+      "path": "report.json",
+      "mediaType": "application/json",
+      "bytes": 550,
+      "sha256": "9608867d98c704bc37c111ec5603e69f04c4e450b4c7d548a0f6e145940a4002"
+    },
+    {
+      "path": "report.md",
+      "mediaType": "text/markdown",
+      "bytes": 355,
+      "sha256": "55a123a798da90be1a66b4fa2f0c2391be21837c5803abd77cd52515c779e17b"
+    }
+  ]
+}

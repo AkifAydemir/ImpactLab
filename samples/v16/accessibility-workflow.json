@@ -1,0 +1,25 @@
+{
+"schemaVersion": 1,
+"steps": [
+{
+"id": "workspace.tabs",
+"automationName": "Workspace navigation",
+"required": true
+},
+{
+"id": "viewport.select",
+"automationName": "Engineering viewport",
+"required": true
+},
+{
+"id": "results.field",
+"automationName": "Result field",
+"required": true
+},
+{
+"id": "results.frame",
+"automationName": "Result frame",
+"required": true
+}
+]
+}

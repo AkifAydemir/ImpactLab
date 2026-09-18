@@ -1,0 +1,60 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.x'
+      - name: Source integrity audit
+        shell: pwsh
+        run: python eng/source_integrity.py --output artifacts/verification/source-integrity.json
+      - name: Artifact and migration integrity audit
+        shell: pwsh
+        run: python eng/artifact_integrity.py --output artifacts/verification/artifact-integrity.json
+      - name: External mesher wire-contract integrity audit
+        shell: pwsh
+        run: python eng/external_mesher_integrity.py --output artifacts/verification/external-mesher-integrity.json
+      - name: Worker and extension-host IPC integrity audit
+        shell: pwsh
+        run: python eng/process_ipc_integrity.py --output artifacts/verification/process-ipc-integrity.json
+      - name: WPF accessibility workflow source-contract integrity audit
+        shell: pwsh
+        run: python eng/accessibility_integrity.py --output artifacts/verification/accessibility-integrity.json
+      - name: Numerical benchmark reference-contract integrity audit
+        shell: pwsh
+        run: python eng/numerical_reference_integrity.py --output artifacts/verification/numerical-reference-integrity.json
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '8.0.x'
+      - name: Check C# formatting
+        shell: pwsh
+        run: |
+          dotnet tool restore
+          dotnet tool run csharpier check .
+      - name: Restore, build and test
+        shell: pwsh
+        run: ./eng/verify.ps1
+      - name: Upload verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-evidence
+          path: |
+            artifacts/verification/source-integrity.json
+            artifacts/verification/artifact-integrity.json
+            artifacts/verification/external-mesher-integrity.json
+            artifacts/verification/process-ipc-integrity.json
+            artifacts/verification/accessibility-integrity.json
+            artifacts/verification/numerical-reference-integrity.json
+            artifacts/verification/verify-evidence.json
+            artifacts/verification/test-results/**/*.trx
+          if-no-files-found: warn

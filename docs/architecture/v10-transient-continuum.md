@@ -1,0 +1,3 @@
+# ImpactLab v10 transient continuum
+The tetrahedral backend now has an explicit transient path with lumped mass, replaceable time integration, per-element constitutive state and stateful surface contact. Static and transient paths share the same ScenarioDefinition, TetrahedralMesh and result-domain boundaries.
+The implementation remains an engineering workbench rather than a validated commercial FEM solver. Repository extraction, compilation, numerical verification and performance profiling remain later gates.

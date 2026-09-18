@@ -1,0 +1,28 @@
+# .NET build outputs
+**/bin/
+**/obj/
+artifacts/
+TestResults/
+
+# IDE and user state
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Generated logs and crash dumps
+*.log
+*.dmp
+*.tmp
+
+# Local packages and publish folders
+packages/
+publish/
+*.nupkg
+
+# OS metadata
+Thumbs.db
+.DS_Store

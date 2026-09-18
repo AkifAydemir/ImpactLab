@@ -1,0 +1,2 @@
+# v11 implicit nonlinear transient
+ImpactLab now defines a Newton-based implicit transient continuum path with explicit convergence metrics, line-search policy, time-step cutback, effective dynamic tangents and persistent element constitutive state. The path remains small-strain and engineering-workbench grade until repository verification/calibration gates are complete.
