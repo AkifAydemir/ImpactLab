@@ -82,6 +82,46 @@ WPF workbench
 
 The fuller dependency and data-flow description is in [architecture](docs/ARCHITECTURE.md).
 
+## Following a scenario through the system
+
+The scenario begins as versioned input rather than UI-only state. Loading or
+creating one passes geometry, materials, selections, loads, constraints,
+probes, rigid bodies, and contact rules to `ScenarioCompiler`. That compiler
+checks and resolves the selections before `SimulationBackendRegistry` chooses
+the requested analysis path. This split lets the WPF shell manage interaction
+without embedding numerical equations inside views or view models.
+
+A backend returns an immutable `BackendRunOutput`: compatibility result data,
+a typed result domain, and, where applicable, a native continuum result.
+Adapters then make frames, fields, telemetry, diagnostics, probes, charts,
+archives, and deterministic reports available to the relevant workspace. The
+same result boundary supports both the quick lattice demonstration and richer
+continuum consumers without pretending that every backend produces identical
+fields. The built-in Plate impact study has been observed reaching Results
+Explorer; that is evidence of the application flow, not a validated impact
+prediction.
+
+Longer or less trusted work is not hidden inside the WPF UI thread. Experiment
+cases can run through a versioned worker protocol with heartbeats, bounded
+concurrency, and hashed artifacts. Extensions that are not trusted for
+in-process loading use a separate host and explicit compatibility/trust checks.
+Versioned document migrations and report fixtures keep older inputs and
+generated artifacts testable. The 111 tests and six integrity audits cover
+many of these contracts, while physical validation still needs convergence,
+material calibration, and comparison with independent measurements.
+
+### Where to read the implementation
+
+| File | What to inspect |
+| --- | --- |
+| [`src/ImpactLab.Core/Scenarios/ScenarioCompiler.cs`](src/ImpactLab.Core/Scenarios/ScenarioCompiler.cs) | Scenario validation and resolved solve inputs. |
+| [`src/ImpactLab.Core/Backends/SimulationBackendRegistry.cs`](src/ImpactLab.Core/Backends/SimulationBackendRegistry.cs) | Backend selection boundary. |
+| [`src/ImpactLab.Core/Backends/BackendRunOutput.cs`](src/ImpactLab.Core/Backends/BackendRunOutput.cs) | Shared immutable run-result contract. |
+| [`src/ImpactLab.App/Services/SimulationRunnerService.cs`](src/ImpactLab.App/Services/SimulationRunnerService.cs) | UI-to-solver orchestration. |
+| [`src/ImpactLab.Worker/WorkerHost.cs`](src/ImpactLab.Worker/WorkerHost.cs) | Isolated experiment execution. |
+| [`src/ImpactLab.ExtensionHost/ExtensionHostRuntime.cs`](src/ImpactLab.ExtensionHost/ExtensionHostRuntime.cs) | Out-of-process extension runtime. |
+| [`eng/verify.ps1`](eng/verify.ps1) | Repeatable Windows verification sequence. |
+
 ## Start with the verified interactive path
 
 1. Open **Simulation → Quick Impact Sandbox** in the Windows Release app.

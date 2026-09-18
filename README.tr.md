@@ -81,6 +81,46 @@ WPF workbench
 
 Daha ayrıntılı bağımlılık ve veri akışı için [mimari notlarına](docs/ARCHITECTURE.md) bakın.
 
+## Bir senaryonun sistem içindeki yolu
+
+Senaryo, yalnızca arayüzde tutulan durum yerine sürümlenmiş girdi olarak
+başlar. Yüklendiğinde veya oluşturulduğunda geometri, malzemeler, seçimler,
+yükler, kısıtlar, probe’lar, rigid body’ler ve contact kuralları
+`ScenarioCompiler`’a geçer. Compiler, `SimulationBackendRegistry` istenen
+analiz yolunu seçmeden önce bu girdileri çözümler ve denetler. Bu ayrım,
+WPF kabuğunun etkileşimi yönetmesini, sayısal denklemlerin ise view veya
+view model içine gömülmemesini sağlar.
+
+Backend; uyumluluk için sonuç verisini, türlendirilmiş result domain’i ve
+uygunsa native continuum sonucunu taşıyan immutable bir `BackendRunOutput`
+döndürür. Adapter’lar frame, alan, telemetri, tanı, probe, chart, arşiv ve
+deterministik raporları ilgili çalışma alanına sunar. Aynı sonuç sınırı hem
+hızlı lattice gösterimini hem daha zengin continuum tüketicilerini destekler;
+her backend’in aynı alanları ürettiği varsayılmaz. Yerleşik Plate impact
+study’nin Results Explorer’a ulaştığı gözlendi; bu uygulama akışının kanıtıdır,
+doğrulanmış darbe tahmini değildir.
+
+Uzun süren veya daha az güvenilen işler WPF UI thread’inin içine gizlenmez.
+Experiment vakaları, heartbeat, sınırlandırılmış eşzamanlılık ve hash’lenmiş
+artifact’ları olan sürümlenmiş worker protokolünden geçebilir. Process içinde
+çalışması için güvenilmeyen extension’lar ayrı host ve açık uyumluluk/güven
+kontrolleri kullanır. Sürümlenmiş belge migration’ları ve rapor fixture’ları
+eski girdileri ve üretilen çıktıları test edilebilir tutar. 111 test ve altı
+bütünlük denetimi bu sözleşmelerin çoğunu kapsar; fiziksel doğrulama içinse
+yakınsama, malzeme kalibrasyonu ve bağımsız ölçümlerle karşılaştırma gerekir.
+
+### Kodu nereden okumalı?
+
+| Dosya | İncelenecek konu |
+| --- | --- |
+| [`src/ImpactLab.Core/Scenarios/ScenarioCompiler.cs`](src/ImpactLab.Core/Scenarios/ScenarioCompiler.cs) | Senaryo denetimi ve çözülmüş solver girdileri. |
+| [`src/ImpactLab.Core/Backends/SimulationBackendRegistry.cs`](src/ImpactLab.Core/Backends/SimulationBackendRegistry.cs) | Backend seçimi sınırı. |
+| [`src/ImpactLab.Core/Backends/BackendRunOutput.cs`](src/ImpactLab.Core/Backends/BackendRunOutput.cs) | Ortak immutable koşu sonucu sözleşmesi. |
+| [`src/ImpactLab.App/Services/SimulationRunnerService.cs`](src/ImpactLab.App/Services/SimulationRunnerService.cs) | UI ile solver arasındaki orkestrasyon. |
+| [`src/ImpactLab.Worker/WorkerHost.cs`](src/ImpactLab.Worker/WorkerHost.cs) | Yalıtılmış deney yürütme. |
+| [`src/ImpactLab.ExtensionHost/ExtensionHostRuntime.cs`](src/ImpactLab.ExtensionHost/ExtensionHostRuntime.cs) | Ayrı process’te extension runtime’ı. |
+| [`eng/verify.ps1`](eng/verify.ps1) | Tekrarlanabilir Windows doğrulama sırası. |
+
 ## Doğrulanmış etkileşimli başlangıç
 
 1. Windows Release uygulamasında **Simulation → Quick Impact Sandbox** bölümünü açın.
