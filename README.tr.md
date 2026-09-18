@@ -24,6 +24,23 @@ ImpactLab, bir mühendislik senaryosunu izlenebilir bir akışa dönüştürür:
 - Deney worker’ları ve güvenilmeyen extension’lar için sürümlenmiş IPC sözleşmeleriyle process sınırları; açık güven ve uyumluluk kuralları.
 - Mimariye dâhil edilmiş doğrulama: analitik benchmark’lar, referans sinyal karşılaştırması, şema migration testleri, deterministik rapor kontrolleri, bütünlük denetimleri ve CI kanıt dosyaları.
 
+## Çalışma ortamı nasıl kuruldu?
+
+Senaryo, ürün arayüzü ile sayısal kodu birleştiren temel birimdir. WPF
+uygulaması geometri, malzeme, yük, sınır koşulu ve backend ayarlarını toplar;
+sürümlenmiş senaryo verisi ve migration’lar kayıtlı girdilerin okunmasını
+sağlar. Seçilen backend `ImpactLab.Core` üzerinden çalışır; masaüstü arayüzü
+ortaya çıkan alanları, telemetriyi, probe’ları, chart’ları ve rapor/export
+akışlarını sunar.
+
+Uygulama, farklı hata ve güven profilleri olan işleri ayırır. Sayısal ve
+domain kodu yeniden kullanılabilir bir kütüphanededir; parameter study’ler
+yalıtılmış worker’da çalışabilir; extension’lar ayrı host ve açık uyumluluk/
+güven kuralları kullanır. Analitik/referans testleri, şema fixture’ları ve
+bütünlük denetimleri bu parçaları ayrı ayrı sınar. Bunlar yazılım davranışı
+ve regresyon kanıtıdır; ölçülmemiş gerçek bir darbenin fiziksel doğruluğu
+anlamına gelmez.
+
 ## Doğrulanmış durum
 
 Mevcut Windows release adayı .NET 8 ile; analyzer’lar ve warnings-as-errors açıkken kaynaktan yeniden build edildi.
@@ -38,9 +55,9 @@ Mevcut Windows release adayı .NET 8 ile; analyzer’lar ve warnings-as-errors a
 | Etkileşimli Quick Impact | **Release uygulamasında tamamlandı — 3,000 ms simülasyon, 235 ms hesaplama, 31 telemetry örneği** |
 | Yerleşik senaryo UI akışı | **Plate impact study: Load Sample → Solve → Results Explorer, Release uygulamasında tamamlandı** |
 | Birlikte build edilen projeler | Core, WPF App, Worker, ExtensionHost, Extractor, MeshAdapter sample, Tests |
-| CI yapılandırması | Windows workflow, push sonrasında bütünlük denetimleri, biçim kontrolü, restore, release build, test ve kanıt yüklemesi için ayarlı |
+| GitHub Actions | **Geçti** — Windows bütünlük denetimleri, biçim kontrolü, Release build ve testler [yayımlanmış workflow koşusunda](https://github.com/AkifAydemir/ImpactLab/actions/runs/35299671087) tamamlandı |
 
-Komutlar ve iddia sınırları için [doğrulama ayrıntılarına](docs/VALIDATION.md) bakın. GitHub Actions henüz uzakta çalıştırılmadı. Güncel masaüstü paket sürümü: **1.0.0**.
+Komutlar ve iddia sınırları için [doğrulama ayrıntılarına](docs/VALIDATION.md) bakın. Sonraki push’ların durumunu [güncel koşulardan](https://github.com/AkifAydemir/ImpactLab/actions) kontrol edin. Güncel masaüstü paket sürümü: **1.0.0**.
 
 ## Kısa mimari görünüm
 

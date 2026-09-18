@@ -24,6 +24,22 @@ ImpactLab turns an engineering scenario into a traceable workflow: define geomet
 - Process boundaries where they matter: experiment workers and untrusted extensions use versioned IPC contracts; extension trust and compatibility policies are explicit.
 - Verification is part of the architecture: analytical benchmarks, reference-signal comparison, schema migration tests, deterministic report checks, integrity audits, and CI evidence artifacts.
 
+## How the workbench is built
+
+A scenario is the unit that connects the product surface to the numerical
+code. The WPF app collects geometry, materials, loads, boundaries, and backend
+settings; versioned scenario data and migrations keep saved inputs readable.
+The selected backend runs through `ImpactLab.Core`, while the desktop presents
+the resulting fields, telemetry, probes, charts, and report/export paths.
+
+The implementation separates jobs with different failure and trust profiles.
+The numerical and domain code lives in a reusable library; parameter studies
+can run in an isolated worker; extensions have a separate host and explicit
+compatibility/trust policy. Analytical/reference tests, schema fixtures, and
+integrity audits check parts of that system independently. They establish
+software behavior and regression evidence, not physical accuracy for an
+unmeasured real-world impact.
+
 ## Verified status
 
 The current Windows release candidate was rebuilt from source on .NET 8 with analyzers and warnings-as-errors enabled.
@@ -38,11 +54,11 @@ The current Windows release candidate was rebuilt from source on .NET 8 with ana
 | Interactive Quick Impact run | **Completed in the Release app — 3.000 ms simulated, 235 ms compute, 31 telemetry samples** |
 | Built-in scenario UI flow | **Plate impact study: Load Sample → Solve → Results Explorer completed in the Release app** |
 | Projects built together | Core, WPF App, Worker, ExtensionHost, Extractor, MeshAdapter sample, Tests |
-| CI configuration | Windows workflow is set to run integrity audits, formatting, restore, release build, tests, and evidence upload after push |
+| GitHub Actions | **Passed** — Windows integrity audits, formatting, Release build, and tests in the [published workflow run](https://github.com/AkifAydemir/ImpactLab/actions/runs/35299671087) |
 
 See [validation details](docs/VALIDATION.md) for the exact commands and claim boundaries.
 
-The Windows workflow is configured locally; GitHub Actions has not run remotely yet. Current desktop package version: **1.0.0**.
+The workflow also runs on subsequent pushes; check [current runs](https://github.com/AkifAydemir/ImpactLab/actions) for their status. Current desktop package version: **1.0.0**.
 
 ## Architecture at a glance
 
