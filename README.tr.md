@@ -23,6 +23,14 @@ ImpactLab, bir mühendislik senaryosunu izlenebilir bir akışa dönüştürür:
 - Senaryo migration, mesh import/repair, parameter sweep, uncertainty ve optimization araçları, result streaming, probe, chart, report ve run archive içeren ürün yüzeyi.
 - Deney worker’ları ve güvenilmeyen extension’lar için sürümlenmiş IPC sözleşmeleriyle process sınırları; açık güven ve uyumluluk kuralları.
 - Mimariye dâhil edilmiş doğrulama: analitik benchmark’lar, referans sinyal karşılaştırması, şema migration testleri, deterministik rapor kontrolleri, bütünlük denetimleri ve CI kanıt dosyaları.
+- Taşınabilir `.impactlab` proje paketleri senaryoyu, kullanıcı malzemelerini ve içe alınmış STL/OBJ varlıklarını tek dosyada saklar.
+- Sade masaüstü arayüzü yinelenen sekme şeridi yerine tek navigasyon alanı, kompakt komut çubuğu, tutarlı mühendislik kontrolleri ve hızlı darbe/assembly/proje/örnek başlangıçlarını sunan bir Start çalışma alanı kullanır.
+- **Assembly** çalışma alanı birden fazla STL/OBJ dosyasını tek mesh’e ezmeden izlenebilir parçalar halinde birleştirir; her parça rolünü, malzemesini, katman sırasını, kaynak birimini, ötelemesini, dönüşünü, ölçeğini ve başlangıç hızını korur. İçe alınmış mesh hem deforme olan hedef hem hareketli rijit çarpan olabilir.
+- Tamamlanmış koşular, her karenin fiziksel zamanını taşıyan JSON zaman çizelgesiyle birlikte animasyonlu GIF olarak veya FFmpeg bulunduğunda H.264 MP4 olarak dışa aktarılabilir.
+- Malzeme kütüphanesi; 15 adlandırılmış mühendislik sınıfı/alaşımı/polimer/seramik yanında kullanıcı tanımlı malzemeleri, nominal akma/çekme dayanımlarını ve standart bilgisini destekler.
+- STL yüzeyleri eksen boyunca katmanlara ayrılıp yeniden STL olarak yazılabilir; ayrıntılı CSV çıktısı düğüm bazında deplasman, hız, hasar, eşdeğer şekil değiştirme, yaklaşık eşdeğer gerilme ve akma emniyet katsayısı üretir.
+- Her koşu; zaman adımı, enerji dengesi, temas penetrasyonu, malzeme izlenebilirliği, sonlu sayısal durum ve kaba mesh çözünürlüğü için otomatik geçerlilik taramasından geçer.
+- Genel amaçlı **Mobility** çalışma alanı araç ve arazi verilerinden geçilebilirlik, risk nedenleri ve rota maliyeti üretir; engelli hücreleri dolaşan A* planlayıcı ile TensorFlow uyumlu CSV/şema dışa aktarımı içerir.
 
 ## Çalışma ortamı nasıl kuruldu?
 
@@ -58,6 +66,9 @@ Mevcut Windows release adayı .NET 8 ile; analyzer’lar ve warnings-as-errors a
 | GitHub Actions | **Geçti** — Windows bütünlük denetimleri, biçim kontrolü, Release build ve testler [yayımlanmış workflow koşusunda](https://github.com/AkifAydemir/ImpactLab/actions/runs/35299671087) tamamlandı |
 
 Komutlar ve iddia sınırları için [doğrulama ayrıntılarına](docs/VALIDATION.md) bakın. Sonraki push’ların durumunu [güncel koşulardan](https://github.com/AkifAydemir/ImpactLab/actions) kontrol edin. Güncel masaüstü paket sürümü: **1.0.0**.
+
+Genişletilebilir çok-modelli çözücü yönü ve doğruluk kuralları
+[fizik motoru mimarisi](docs/PHYSICS_ENGINE_ARCHITECTURE.md) belgesinde kayıtlıdır.
 
 ## Kısa mimari görünüm
 
@@ -124,7 +135,7 @@ yakınsama, malzeme kalibrasyonu ve bağımsız ölçümlerle karşılaştırma 
 ## Doğrulanmış etkileşimli başlangıç
 
 1. Windows Release uygulamasında **Simulation → Quick Impact Sandbox** bölümünü açın.
-2. **Mesh cell size** değerini `20 mm`, **Time step** değerini `20 µs` yapın; diğer varsayılan girdileri değiştirmeyin.
+2. Başlangıç için **Mesh cell size** değerini `20 mm`, **Time step** değerini `1.5 µs` yapın; koşu raporundaki explicit time-step kapısını kontrol edin.
 3. **Run Quick Impact** seçeneğini çalıştırın. Yukarıdaki gerçek yakalamada 3B sahne ve 31 telemetry örneği oluştu.
 
 İkinci bir UI akışı için yerleşik **Plate impact study** örneğini seçin, **Explicit Lattice Dynamics** backend’ini koruyun ve **Solve** seçeneğine basın. Release uygulaması bu kaba çözünürlüklü örneği tamamlayıp `15` numaralı karede **Results Explorer** bölümünü açtı. Bu gözlem iş akışı geçişini ve sonuç satırlarının oluşmasını doğrular; anlamlı bir darbe cevabı veya fiziksel doğruluk iddiası taşımaz. Daha açıklayıcı ürün görüntüsü yukarıdaki Quick Impact ekranıdır.
@@ -170,6 +181,8 @@ Küçük ve incelenebilir değişiklikler için yerel kalite kapıları [CONTRIB
 ImpactLab yazılım mimarisi ve sayısal mühendislik pratiğini gösterir. Geçen testler, uygulanan sözleşmelerin ve dâhil edilen analitik/referans vakaların beklenen şekilde davrandığını gösterir; rastgele gerçek yapıların davranışını öngörme doğruluğunu **kanıtlamaz**. Üretim kullanımında mesh/time-step yakınsama çalışmaları, deneysel korelasyon, daha geniş eleman ve contact doğrulaması, malzeme kalibrasyonu ve bağımsız inceleme gerekir.
 
 Bu sınır bilinçlidir: proje varsayımları ve kanıtı etkileyici ekran görüntülerinin arkasına saklamamayı amaçlar.
+
+STL katman dışa aktarımı üçgenleri merkez noktalarına göre yüzey gruplarına ayırır; kesme düzleminden geçen üçgenleri geometrik olarak bölüp kapalı hacimler üretmez. Assembly içe aktarımı bağımsız parçaları ve temas kimliğini korur; CAD boolean union işlemi değildir. Continuum analizi öncesinde watertight/hacimsel geometri, parça hizası, temas çiftleri, mesh yakınsaması ve açık zaman adımı ayrıca doğrulanmalıdır. Yerleşik malzeme değerleri nominal oda sıcaklığı referanslarıdır; gerçek parça için üretici veri sayfası veya test sertifikasıyla değiştirilmelidir. GIF çıktısı kayıtlı çözücü karelerinin mühendislik görselleştirmesidir; ek fiziksel kanıt sayılmaz.
 
 ## Lisans
 

@@ -41,7 +41,7 @@ public sealed class IncrementalContinuumSolver
                 {
                     var yield =
                         mesh.Elements[i].Material.YoungModulusPa
-                        * mesh.Elements[i].Material.YieldStrain;
+                        * mesh.Elements[i].Material.EffectiveYieldStrain;
                     var ratio = yield <= 0 ? 0 : current.ElementStress[i].VonMises / yield;
                     var next = Math.Clamp((ratio - 1.0) * 0.08, 0, 0.98);
                     if (next > damage[i] + 1e-4)

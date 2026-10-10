@@ -44,6 +44,8 @@ public sealed class PressurePulseLoad : ILoadSource
         var faceArea = mesh.CellSize * mesh.CellSize;
         for (var i = 0; i < mesh.Nodes.Count; i++)
         {
+            if (!state.IsActive[i])
+                continue;
             var radial = state.Position[i] - Origin;
             var distance = radial.Length;
             if (distance <= 1e-12 || distance > Radius)

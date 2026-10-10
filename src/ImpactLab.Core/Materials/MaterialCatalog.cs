@@ -14,7 +14,9 @@ public sealed class MaterialCatalog
             _entries[material.Id] = new MaterialCatalogEntry(
                 material,
                 CategoryFor(material),
-                "Built-in reference material.",
+                string.IsNullOrWhiteSpace(material.Standard)
+                    ? "Built-in generic reference material."
+                    : $"Nominal reference values: {material.Standard}. Verify the actual grade, product form, temperature and strain rate before engineering use.",
                 true
             );
     }

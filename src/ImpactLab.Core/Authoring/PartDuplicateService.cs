@@ -17,9 +17,17 @@ public static class PartDuplicateService
             GeometryKind = source.GeometryKind,
             GeometryParameters = source.GeometryParameters.Clone(),
             ImportedMeshPath = source.ImportedMeshPath,
+            ImportedMeshUnit = source.ImportedMeshUnit,
+            CenterImportedMesh = source.CenterImportedMesh,
+            WeldImportedMesh = source.WeldImportedMesh,
             MaterialId = source.MaterialId,
             Behavior = source.Behavior,
             FixMinimumZPlane = source.FixMinimumZPlane,
             Transform = source.Transform,
+            AssemblyId = source.AssemblyId,
+            Role = source.Role,
+            LayerIndex = source.LayerIndex,
+            NominalLayerThicknessMeters = source.NominalLayerThicknessMeters,
+            IsVisible = source.IsVisible,
         };
 }

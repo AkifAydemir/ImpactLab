@@ -12,7 +12,10 @@ public sealed class MaterialProfileCatalog
             _profiles[entry.Definition.Id] = new MaterialProfile(entry.Definition)
             {
                 Provenance = new MaterialProvenance(
-                    entry.IsBuiltIn ? "ImpactLab built-in generic dataset" : "User material"
+                    entry.IsBuiltIn ? "ImpactLab nominal engineering dataset" : "User material",
+                    Specification: string.IsNullOrWhiteSpace(entry.Definition.Standard)
+                        ? null
+                        : entry.Definition.Standard
                 ),
                 Notes = entry.Notes,
             };

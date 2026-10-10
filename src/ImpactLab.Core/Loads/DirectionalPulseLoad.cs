@@ -46,6 +46,8 @@ public sealed class DirectionalPulseLoad : ILoadSource
         var weightSum = 0.0;
         for (var i = 0; i < mesh.Nodes.Count; i++)
         {
+            if (!state.IsActive[i])
+                continue;
             var distance = (state.Position[i] - Center).Length;
             if (distance > Radius)
                 continue;

@@ -5,5 +5,7 @@ public readonly record struct DeformableContactMetrics(
     string PartB,
     int ContactCount,
     double MaxOverlapMeters,
-    double TotalNormalForceN
+    double TotalNormalForceN,
+    double StoredNormalPenaltyEnergyJ = 0.0,
+    double DissipatedNormalDampingEnergyJ = 0.0
 );

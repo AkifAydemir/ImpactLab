@@ -5,7 +5,7 @@ using ImpactLab.Core.Spatial;
 
 namespace ImpactLab.Core.Contact;
 
-public sealed class DeformableContactSolver
+public sealed class DeformableContactSolver : IDeformableContactStepSolver
 {
     private readonly SpatialHash3 _hash;
     private readonly List<int> _candidates = [];
@@ -23,26 +23,34 @@ public sealed class DeformableContactSolver
         string partA,
         string partB,
         ContactSettings settings,
-        DeformableContactRule rule
+        DeformableContactRule rule,
+        double timeStepSeconds = 0.0
     )
     {
         if (!rule.Enabled || surfaceA.Count == 0 || surfaceB.Count == 0)
             return new(partA, partB, 0, 0.0, 0.0);
         _hash.Clear();
         foreach (var id in surfaceB)
-            _hash.Insert(id, state.Position[id]);
+            if (state.IsActive[id])
+                _hash.Insert(id, state.Position[id]);
         var count = 0;
         var maxOverlap = 0.0;
         var totalNormalForce = 0.0;
+        var penaltyEnergy = 0.0;
+        var normalDampingEnergy = 0.0;
         var searchRadius = mesh.CellSize * settings.NodeRadiusScale * 2.0;
         var stiffness = settings.NormalStiffnessNPerM * rule.StiffnessScale;
         var damping = settings.NormalDampingNsPerM * rule.DampingScale;
         foreach (var a in surfaceA)
         {
+            if (!state.IsActive[a])
+                continue;
             var pa = state.Position[a];
             _hash.Query(pa, searchRadius, _candidates);
             foreach (var b in _candidates)
             {
+                if (!state.IsActive[b])
+                    continue;
                 var delta = pa - state.Position[b];
                 var distance = delta.Length;
                 var target =
@@ -62,8 +70,18 @@ public sealed class DeformableContactSolver
                 count++;
                 maxOverlap = Math.Max(maxOverlap, overlap);
                 totalNormalForce += forceMagnitude;
+                penaltyEnergy += 0.5 * stiffness * overlap * overlap;
+                normalDampingEnergy += damping * normalSpeed * normalSpeed * timeStepSeconds;
             }
         }
-        return new(partA, partB, count, maxOverlap, totalNormalForce);
+        return new(
+            partA,
+            partB,
+            count,
+            maxOverlap,
+            totalNormalForce,
+            penaltyEnergy,
+            normalDampingEnergy
+        );
     }
 }

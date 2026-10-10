@@ -32,7 +32,16 @@ public static class ScenarioCompiler
                     );
                 geometry = new AcceleratedTriangleMeshSpec(
                     part.Name,
-                    importer.Import(part.ImportedMeshPath).Asset,
+                    importer
+                        .Import(
+                            part.ImportedMeshPath,
+                            new MeshImportOptions(
+                                part.ImportedMeshUnit,
+                                part.CenterImportedMesh,
+                                part.WeldImportedMesh
+                            )
+                        )
+                        .Asset,
                     Vec3.Zero
                 );
             }
@@ -89,18 +98,50 @@ public static class ScenarioCompiler
             .ToArray();
         var probes = definition.Probes.Select(probe => CompileProbe(mesh, probe)).ToArray();
         var bodies = definition
-            .RigidBodies.Select(body => new RigidBodyDefinition(
-                body.Id,
-                body.Name,
-                ParametricGeometryFactory.Create(
-                    body.GeometryKind,
+            .RigidBodies.Select(body =>
+            {
+                GeometrySpec geometry;
+                if (body.GeometrySource == ScenarioGeometrySourceKind.ImportedMesh)
+                {
+                    if (string.IsNullOrWhiteSpace(body.ImportedMeshPath))
+                        throw new InvalidOperationException(
+                            $"Rigid body {body.Id} has no imported mesh path."
+                        );
+                    geometry = new AcceleratedTriangleMeshSpec(
+                        body.Name,
+                        importer
+                            .Import(
+                                body.ImportedMeshPath,
+                                new MeshImportOptions(
+                                    body.ImportedMeshUnit,
+                                    body.CenterImportedMesh,
+                                    body.WeldImportedMesh
+                                )
+                            )
+                            .Asset,
+                        Vec3.Zero
+                    );
+                }
+                else
+                {
+                    geometry = ParametricGeometryFactory.Create(
+                        body.GeometryKind,
+                        body.Name,
+                        body.GeometryParameters.Clone()
+                    );
+                }
+                if (body.Transform != GeometryTransform3.Identity)
+                    geometry = new TransformedGeometrySpec(body.Name, geometry, body.Transform);
+                return new RigidBodyDefinition(
+                    body.Id,
                     body.Name,
-                    body.GeometryParameters.Clone()
-                ),
-                materials.Get(body.MaterialId),
-                body.InitialVelocity,
-                initialAngularVelocityRadPerSec: body.InitialAngularVelocity
-            ))
+                    geometry,
+                    materials.Get(body.MaterialId),
+                    body.InitialVelocity,
+                    massOverrideKg: body.MassOverrideKg,
+                    initialAngularVelocityRadPerSec: body.InitialAngularVelocity
+                );
+            })
             .ToArray();
         var rigidContacts = new ContactInteractionTable();
         foreach (var contact in definition.Contacts)

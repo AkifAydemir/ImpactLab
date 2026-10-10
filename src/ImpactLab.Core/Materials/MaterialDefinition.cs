@@ -12,9 +12,20 @@ public sealed record MaterialDefinition(
     MaterialResponseKind ResponseKind = MaterialResponseKind.Generic,
     double TangentModulusPa = 0.0,
     double CompressiveStrengthScale = 1.0,
-    double RateSensitivity = 0.0
+    double RateSensitivity = 0.0,
+    double YieldStrengthPa = 0.0,
+    double UltimateTensileStrengthPa = 0.0,
+    double ThermalConductivityWPerMK = 0.0,
+    double SpecificHeatJPerKgK = 0.0,
+    string Standard = "",
+    string ColorHex = "#7D8794"
 )
 {
+    public double EffectiveYieldStrengthPa =>
+        YieldStrengthPa > 0 ? YieldStrengthPa : YoungModulusPa * YieldStrain;
+
+    public double EffectiveYieldStrain => EffectiveYieldStrengthPa / YoungModulusPa;
+
     public void Validate()
     {
         if (string.IsNullOrWhiteSpace(Id))
@@ -37,5 +48,25 @@ public sealed record MaterialDefinition(
             throw new InvalidOperationException("Compressive strength scale must be positive.");
         if (RateSensitivity < 0.0)
             throw new InvalidOperationException("Rate sensitivity cannot be negative.");
+        if (YieldStrengthPa < 0.0 || UltimateTensileStrengthPa < 0.0)
+            throw new InvalidOperationException("Strength values cannot be negative.");
+        if (UltimateTensileStrengthPa > 0.0 && EffectiveYieldStrengthPa > UltimateTensileStrengthPa)
+            throw new InvalidOperationException(
+                "Ultimate tensile strength must not be lower than yield strength."
+            );
+        if (ThermalConductivityWPerMK < 0.0 || SpecificHeatJPerKgK < 0.0)
+            throw new InvalidOperationException("Thermal properties cannot be negative.");
+        if (
+            string.IsNullOrWhiteSpace(ColorHex)
+            || ColorHex.Length != 7
+            || ColorHex[0] != '#'
+            || !int.TryParse(
+                ColorHex.AsSpan(1),
+                System.Globalization.NumberStyles.HexNumber,
+                System.Globalization.CultureInfo.InvariantCulture,
+                out _
+            )
+        )
+            throw new InvalidOperationException("Material color must use #RRGGBB format.");
     }
 }

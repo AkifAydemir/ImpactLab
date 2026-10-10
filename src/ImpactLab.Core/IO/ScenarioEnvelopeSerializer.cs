@@ -11,18 +11,23 @@ public static class ScenarioEnvelopeSerializer
     {
         WriteIndented = true,
         PropertyNameCaseInsensitive = true,
+        PreferredObjectCreationHandling = JsonObjectCreationHandling.Populate,
         Converters = { new JsonStringEnumConverter() },
     };
 
     public static void Save(string path, ScenarioDefinition scenario) =>
-        File.WriteAllText(
-            path,
-            JsonSerializer.Serialize(new ScenarioFileEnvelope { Scenario = scenario }, Options)
-        );
+        File.WriteAllText(path, Serialize(scenario));
+
+    public static string Serialize(ScenarioDefinition scenario) =>
+        JsonSerializer.Serialize(new ScenarioFileEnvelope { Scenario = scenario }, Options);
 
     public static ScenarioDefinition Load(string path)
     {
-        var text = File.ReadAllText(path);
+        return Deserialize(File.ReadAllText(path));
+    }
+
+    public static ScenarioDefinition Deserialize(string text)
+    {
         var root =
             JsonNode.Parse(text)?.AsObject()
             ?? throw new InvalidDataException("Scenario file is empty.");

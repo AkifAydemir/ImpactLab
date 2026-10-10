@@ -16,7 +16,7 @@ public sealed class MaterialResponseDamageModel : IDamageModel
         var effective = Math.Abs(strain);
         if (strain < 0.0)
             effective /= Math.Max(material.CompressiveStrengthScale, 1e-9);
-        var yield = material.YieldStrain * (spring.Interface?.YieldStrainScale ?? 1.0);
+        var yield = material.EffectiveYieldStrain * (spring.Interface?.YieldStrainScale ?? 1.0);
         var failure = material.FailureStrain * (spring.Interface?.FailureStrainScale ?? 1.0);
         if (effective <= yield)
             return currentDamage;

@@ -7,5 +7,6 @@ public readonly record struct NodeResultRecord(
     string PartId,
     Vec3 Position,
     double Value,
+    string Unit,
     double Damage
 );

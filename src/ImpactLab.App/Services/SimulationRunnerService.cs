@@ -4,6 +4,7 @@ using ImpactLab.Core.Continuum.Results;
 using ImpactLab.Core.Materials;
 using ImpactLab.Core.PostProcessing;
 using ImpactLab.Core.Scenarios;
+using ImpactLab.Core.Verification;
 
 namespace ImpactLab.App.Services;
 
@@ -13,7 +14,8 @@ public sealed record SimulationRunBundle(
     BackendResultSummary BackendSummary,
     IReadOnlyList<ProbeSeries> Probes,
     EnergyBalanceSeries EnergyBalance,
-    SimulationBackendDescriptor Backend
+    SimulationBackendDescriptor Backend,
+    RunValidityAssessment Validity
 )
 {
     public ImpactLab.Core.Simulation.SimulationResult Result => BackendOutput.Result;
@@ -49,13 +51,15 @@ public sealed class SimulationRunnerService
         IReadOnlyList<ProbeSeries> probes = output.Native<ContinuumResult>() is { } c
             ? ContinuumProbeEvaluator.Evaluate(c, compiled.Probes)
             : ProbeEvaluator.Evaluate(compiled.Mesh, output.Result, compiled.Probes);
+        var energy = EnergyBalanceAnalyzer.Analyze(output.Result);
         return new(
             compiled,
             output,
             BackendResultAnalyzer.Analyze(backend.Descriptor.Id, output),
             probes,
-            EnergyBalanceAnalyzer.Analyze(output.Result),
-            backend.Descriptor
+            energy,
+            backend.Descriptor,
+            RunValidityAssessor.Assess(scenario, compiled, output.Result, energy)
         );
     }
 }

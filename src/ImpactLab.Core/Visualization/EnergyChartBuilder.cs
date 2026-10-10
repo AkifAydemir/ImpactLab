@@ -24,11 +24,40 @@ public static class EnergyChartBuilder
         );
         chart.Series.Add(
             new ChartSeries(
-                "Friction",
+                "Contact potential",
                 "s",
                 "J",
                 energy
-                    .Samples.Select(x => new ChartPoint(x.TimeSeconds, x.FrictionEnergyJ))
+                    .Samples.Select(x => new ChartPoint(x.TimeSeconds, x.ContactPotentialEnergyJ))
+                    .ToArray()
+            )
+        );
+        chart.Series.Add(
+            new ChartSeries(
+                "Dissipated",
+                "s",
+                "J",
+                energy
+                    .Samples.Select(x => new ChartPoint(
+                        x.TimeSeconds,
+                        x.FrictionEnergyJ
+                            + x.ContactDampingEnergyJ
+                            + x.StructuralDampingEnergyJ
+                            + x.GlobalDampingEnergyJ
+                            + x.PlasticDissipationEnergyJ
+                            + x.FractureDissipationEnergyJ
+                            + x.ThermalEnergyJ
+                    ))
+                    .ToArray()
+            )
+        );
+        chart.Series.Add(
+            new ChartSeries(
+                "Accounted",
+                "s",
+                "J",
+                energy
+                    .Samples.Select(x => new ChartPoint(x.TimeSeconds, x.AccountedEnergyJ))
                     .ToArray()
             )
         );

@@ -25,10 +25,14 @@ public static class RigidContactSolver
         var totalNormalForce = 0.0;
         var totalTangentialForce = 0.0;
         var frictionEnergy = 0.0;
+        var penaltyEnergy = 0.0;
+        var normalDampingEnergy = 0.0;
         var stiffness = settings.NormalStiffnessNPerM * rule.NormalStiffnessScale;
         var damping = settings.NormalDampingNsPerM * rule.NormalDampingScale;
         foreach (var i in surfaceNodes)
         {
+            if (!state.IsActive[i])
+                continue;
             var point = state.Position[i];
             var nodeRadius = mesh.Nodes[i].CellSize * settings.NodeRadiusScale;
             var sample = GeometryContact.Sample(body.Definition.Geometry, body.Transform, point);
@@ -58,6 +62,8 @@ public static class RigidContactSolver
             maxPenetration = Math.Max(maxPenetration, penetration);
             frictionEnergy +=
                 Math.Max(0.0, -Vec3.Dot(tangentialForce, tangentialVelocity)) * timeStepSeconds;
+            penaltyEnergy += 0.5 * stiffness * penetration * penetration;
+            normalDampingEnergy += damping * normalSpeed * normalSpeed * timeStepSeconds;
         }
         return new ContactPairMetrics(
             body.Definition.Id,
@@ -66,7 +72,9 @@ public static class RigidContactSolver
             maxPenetration,
             totalNormalForce,
             totalTangentialForce,
-            frictionEnergy
+            frictionEnergy,
+            penaltyEnergy,
+            normalDampingEnergy
         );
     }
 

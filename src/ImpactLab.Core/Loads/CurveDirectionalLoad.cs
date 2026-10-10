@@ -40,6 +40,8 @@ public sealed class CurveDirectionalLoad : ILoadSource
         var selected = new List<int>();
         for (var i = 0; i < mesh.Nodes.Count; i++)
         {
+            if (!state.IsActive[i])
+                continue;
             if (
                 PartId is not null
                 && !string.Equals(mesh.Nodes[i].PartId, PartId, StringComparison.OrdinalIgnoreCase)

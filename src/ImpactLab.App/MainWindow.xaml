@@ -4,69 +4,71 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ImpactLab.App.Controls"
     Title="ImpactLab Engineering Workbench"
-    Width="1280"
-    Height="720"
-    MinWidth="1000"
-    MinHeight="600"
+    Width="1440"
+    Height="850"
+    MinWidth="1120"
+    MinHeight="700"
     WindowStartupLocation="CenterScreen"
     AutomationProperties.Name="ImpactLab engineering workbench"
     KeyboardNavigation.TabNavigation="Cycle"
 >
-    <Grid Background="#11151B">
+    <Grid Background="{StaticResource WindowBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="218" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Border Background="#171D25" BorderBrush="#2A3442" BorderThickness="0,0,1,0">
-            <StackPanel Margin="14">
-                <TextBlock
-                    Text="IMPACTLAB"
-                    Foreground="White"
-                    FontSize="22"
-                    FontWeight="Bold"
-                    Margin="4,6,4,10"
-                />
-                <TextBlock
-                    Text="v1 portfolio release candidate"
-                    Foreground="#A9B8CA"
-                    FontSize="11"
-                    Margin="4,0,4,10"
-                />
+        <Border
+            Background="{StaticResource NavigationBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="0,0,1,0"
+        >
+            <Grid Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Margin="8,9,8,15">
+                    <TextBlock Text="IMPACTLAB" FontSize="20" FontWeight="SemiBold" />
+                    <TextBlock
+                        Text="Impact Simulation Workbench"
+                        Style="{StaticResource MutedTextStyle}"
+                        FontSize="11"
+                        Margin="0,2,0,0"
+                    />
+                </StackPanel>
                 <ListBox
+                    Grid.Row="1"
                     ItemsSource="{Binding Tabs}"
                     SelectedItem="{Binding SelectedTab}"
-                    Background="Transparent"
-                    Foreground="#D8E0EA"
-                    BorderThickness="0"
+                    Style="{StaticResource NavigationListStyle}"
                     AutomationProperties.Name="Workspace navigation"
                 />
-                <Separator Margin="0,14" Background="#2A3442" />
-                <TextBlock Text="ENGINEERING FLOW" Foreground="#A9B8CA" FontWeight="SemiBold" />
-                <TextBlock Text="1. New / Open analysis" Foreground="#D8E0EA" Margin="0,6,0,0" />
-                <TextBlock
-                    Text="2. Setup: geometry, materials, loads, boundaries"
-                    TextWrapping="Wrap"
-                    Foreground="#D8E0EA"
-                />
-                <TextBlock
-                    Text="3. Solve: backend + run status"
-                    TextWrapping="Wrap"
-                    Foreground="#D8E0EA"
-                />
-                <TextBlock
-                    Text="4. Results: fields, timeline, probes, charts, report"
-                    TextWrapping="Wrap"
-                    Foreground="#D8E0EA"
-                />
-                <Separator Margin="0,14" Background="#2A3442" />
-                <TextBlock Text="CREDIBILITY" Foreground="#A9B8CA" FontWeight="SemiBold" />
-                <TextBlock
-                    Text="Release build is warning-free; automated solver, workflow and integrity verification is included in the repository."
-                    TextWrapping="Wrap"
-                    Foreground="#7FD1AE"
-                    Margin="0,6,0,0"
-                />
-            </StackPanel>
+                <Border
+                    Grid.Row="2"
+                    Background="#181C21"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="3"
+                    Padding="10"
+                    Margin="0,10,0,0"
+                >
+                    <StackPanel>
+                        <TextBlock
+                            Text="LOCAL WORKSPACE"
+                            FontSize="10"
+                            FontWeight="SemiBold"
+                            Foreground="{StaticResource MutedTextBrush}"
+                        />
+                        <TextBlock Text="Release build · net8.0" FontSize="11" Margin="0,3,0,0" />
+                        <TextBlock
+                            Text="120 automated tests"
+                            FontSize="11"
+                            Foreground="{StaticResource SuccessBrush}"
+                        />
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Border>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -74,42 +76,73 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Border
-                Background="#151B23"
-                BorderBrush="#2A3442"
+                Background="{StaticResource PanelBrush}"
+                BorderBrush="{StaticResource BorderBrush}"
                 BorderThickness="0,0,0,1"
-                Padding="12"
+                Padding="14,10"
             >
-                <StackPanel>
-                    <WrapPanel VerticalAlignment="Center">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <Button
-                            Content="New Analysis"
+                            Content="New"
                             Command="{Binding NewAnalysisCommand}"
-                            Margin="0,0,8,0"
+                            Style="{StaticResource ToolbarButtonStyle}"
                             AutomationProperties.Name="New analysis"
                         />
                         <Button
-                            Content="Open Scenario..."
+                            Content="Open..."
                             Click="OpenScenario_Click"
-                            Margin="0,0,14,0"
+                            Style="{StaticResource ToolbarButtonStyle}"
                             AutomationProperties.Name="Open scenario"
                         />
-                        <TextBlock Text="Sample" VerticalAlignment="Center" Foreground="#D8E0EA" />
-                        <ComboBox
-                            Width="210"
-                            Margin="8,0,8,0"
-                            ItemsSource="{Binding SampleNames}"
-                            SelectedItem="{Binding SelectedSampleName}"
-                            AutomationProperties.Name="Built-in sample"
+                        <Button
+                            Content="Save..."
+                            Click="SaveProject_Click"
+                            Style="{StaticResource ToolbarButtonStyle}"
+                            AutomationProperties.Name="Save portable ImpactLab project"
+                        />
+                        <Separator Width="1" Height="22" Margin="8,0" />
+                        <Button
+                            Content="CSV"
+                            Click="ExportResultsCsv_Click"
+                            Style="{StaticResource ToolbarButtonStyle}"
+                            AutomationProperties.Name="Export detailed result CSV"
                         />
                         <Button
-                            Content="Load Sample"
-                            Command="{Binding LoadSampleCommand}"
-                            Margin="0,0,14,0"
+                            Content="Report"
+                            Click="ExportReport_Click"
+                            Style="{StaticResource ToolbarButtonStyle}"
+                            AutomationProperties.Name="Export engineering report"
                         />
-                        <TextBlock Text="Backend" VerticalAlignment="Center" Foreground="#D8E0EA" />
+                        <Button
+                            Content="Animation"
+                            Click="ExportAnimation_Click"
+                            Style="{StaticResource ToolbarButtonStyle}"
+                            AutomationProperties.Name="Export simulation animation"
+                        />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="22,0" VerticalAlignment="Center">
+                        <TextBlock
+                            Text="{Binding AnalysisStatus}"
+                            TextTrimming="CharacterEllipsis"
+                            AutomationProperties.LiveSetting="Polite"
+                        />
+                        <TextBlock
+                            Text="{Binding Backend.VerificationState}"
+                            Foreground="{StaticResource WarningBrush}"
+                            FontSize="11"
+                            TextTrimming="CharacterEllipsis"
+                        />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <ComboBox
-                            Width="270"
-                            Margin="8,0,8,0"
+                            Width="235"
+                            Margin="0,0,8,0"
                             ItemsSource="{Binding Backend.Backends}"
                             SelectedItem="{Binding Backend.Selected}"
                             DisplayMemberPath="DisplayName"
@@ -118,45 +151,159 @@
                         <Button
                             Content="Solve"
                             Command="{Binding RunScenarioCommand}"
-                            FontWeight="SemiBold"
+                            Style="{StaticResource PrimaryButtonStyle}"
                             AutomationProperties.Name="Run current scenario"
                         />
-                    </WrapPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,7,0,0">
-                        <TextBlock
-                            Text="{Binding AnalysisStatus}"
-                            Foreground="#D8E0EA"
-                            TextWrapping="Wrap"
-                            AutomationProperties.LiveSetting="Polite"
-                        />
-                        <TextBlock Text="  |  " Foreground="#657386" />
-                        <TextBlock
-                            Text="{Binding Backend.VerificationState}"
-                            Foreground="#D8A95A"
-                            TextWrapping="Wrap"
-                        />
                     </StackPanel>
-                </StackPanel>
+                </Grid>
             </Border>
             <TabControl
                 Grid.Row="1"
                 SelectedIndex="{Binding SelectedTabIndex}"
-                Background="#11151B"
-                BorderThickness="0"
+                Style="{StaticResource WorkspaceTabControlStyle}"
                 AutomationProperties.Name="Engineering workspaces"
             >
-                <TabControl.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Foreground" Value="#D8E0EA" />
-                        <Setter Property="HeaderTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}" Foreground="#11151B" />
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.Resources>
+                <TabItem Header="Start">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid Margin="36,30" MaxWidth="1120" HorizontalAlignment="Left">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel>
+                                <TextBlock
+                                    Text="Start an impact analysis"
+                                    Style="{StaticResource PageTitleStyle}"
+                                />
+                                <TextBlock
+                                    Text="Create a guided setup, assemble imported parts, or open a known example."
+                                    Style="{StaticResource MutedTextStyle}"
+                                    FontSize="14"
+                                />
+                            </StackPanel>
+                            <Grid Grid.Row="1" Margin="0,24,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Style="{StaticResource PanelStyle}" Margin="0,0,12,0">
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="Quick impact"
+                                            Style="{StaticResource SectionTitleStyle}"
+                                        />
+                                        <TextBlock
+                                            Text="Use parametric target and impactor geometry for a fast first simulation."
+                                            Style="{StaticResource MutedTextStyle}"
+                                            MinHeight="58"
+                                        />
+                                        <Button
+                                            Content="Configure quick impact"
+                                            Command="{Binding OpenQuickImpactCommand}"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            Margin="0,14,0,0"
+                                        />
+                                    </StackPanel>
+                                </Border>
+                                <Border
+                                    Grid.Column="1"
+                                    Style="{StaticResource PanelStyle}"
+                                    Margin="0,0,12,0"
+                                >
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="STL / OBJ assembly"
+                                            Style="{StaticResource SectionTitleStyle}"
+                                        />
+                                        <TextBlock
+                                            Text="Combine multiple parts, assign materials and layers, then define the moving impactor."
+                                            Style="{StaticResource MutedTextStyle}"
+                                            MinHeight="58"
+                                        />
+                                        <Button
+                                            Content="Build an assembly"
+                                            Command="{Binding OpenAssemblyCommand}"
+                                            Margin="0,14,0,0"
+                                        />
+                                    </StackPanel>
+                                </Border>
+                                <Border Grid.Column="2" Style="{StaticResource PanelStyle}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="Open project"
+                                            Style="{StaticResource SectionTitleStyle}"
+                                        />
+                                        <TextBlock
+                                            Text="Continue from a portable .impactlab project or an existing scenario file."
+                                            Style="{StaticResource MutedTextStyle}"
+                                            MinHeight="58"
+                                        />
+                                        <Button
+                                            Content="Open project..."
+                                            Click="OpenScenario_Click"
+                                            Margin="0,14,0,0"
+                                        />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <Grid Grid.Row="2" Margin="0,24,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Border Style="{StaticResource PanelStyle}" Margin="0,0,12,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel>
+                                            <TextBlock
+                                                Text="Built-in examples"
+                                                Style="{StaticResource SectionTitleStyle}"
+                                            />
+                                            <TextBlock
+                                                Text="Start with a reproducible configuration before importing your own geometry."
+                                                Style="{StaticResource MutedTextStyle}"
+                                            />
+                                        </StackPanel>
+                                        <StackPanel
+                                            Grid.Row="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,14,0,0"
+                                        >
+                                            <ComboBox
+                                                Width="280"
+                                                ItemsSource="{Binding SampleNames}"
+                                                SelectedItem="{Binding SelectedSampleName}"
+                                                AutomationProperties.Name="Built-in sample"
+                                            />
+                                            <Button
+                                                Content="Load example"
+                                                Command="{Binding LoadSampleCommand}"
+                                                Margin="8,3,0,8"
+                                            />
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                                <Border Grid.Column="1" Style="{StaticResource PanelStyle}">
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="Recommended workflow"
+                                            Style="{StaticResource SectionTitleStyle}"
+                                        />
+                                        <TextBlock Text="1  Geometry and assembly" Margin="0,3" />
+                                        <TextBlock Text="2  Materials and contacts" Margin="0,3" />
+                                        <TextBlock Text="3  Solve and verify" Margin="0,3" />
+                                        <TextBlock Text="4  Inspect and export" Margin="0,3" />
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </ScrollViewer>
+                </TabItem>
                 <TabItem Header="Simulation">
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <Grid
@@ -171,8 +318,7 @@
                             <StackPanel Margin="0,0,20,0">
                                 <TextBlock
                                     Text="Quick Impact Sandbox"
-                                    FontSize="24"
-                                    FontWeight="Bold"
+                                    Style="{StaticResource PageTitleStyle}"
                                 />
                                 <TextBlock
                                     Text="Interactive explicit-lattice impact path with replay, heatmaps and engineering telemetry."
@@ -223,8 +369,8 @@
                                 <Button
                                     Content="Run Quick Impact"
                                     Command="{Binding RunCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
                                     Margin="0,10,0,4"
-                                    FontWeight="SemiBold"
                                     AutomationProperties.Name="Run quick impact sandbox"
                                 />
                                 <TextBlock
@@ -239,11 +385,13 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Border
-                                    BorderBrush="#2A3442"
+                                    BorderBrush="{StaticResource BorderBrush}"
                                     BorderThickness="1"
-                                    Background="#0F1319"
+                                    Background="#101318"
+                                    CornerRadius="3"
                                     MinHeight="360"
                                 >
                                     <Viewport3D
@@ -282,6 +430,12 @@
                                         ItemsSource="{Binding HeatmapModes}"
                                         SelectedItem="{Binding SelectedHeatmap}"
                                     />
+                                    <TextBlock
+                                        Text="{Binding HeatmapRange}"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,16,0"
+                                        Foreground="#A9B8CA"
+                                    />
                                     <Button
                                         Content="Previous"
                                         Command="{Binding PreviousFrameCommand}"
@@ -294,7 +448,27 @@
                                         Margin="12,0,0,0"
                                     />
                                 </StackPanel>
-                                <UniformGrid Grid.Row="2" Columns="3" Margin="0,6,0,0">
+                                <StackPanel Grid.Row="2" Margin="0,2,0,8">
+                                    <Border Height="10" CornerRadius="5">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                <GradientStop Color="#143D73" Offset="0" />
+                                                <GradientStop Color="#1E90FF" Offset="0.25" />
+                                                <GradientStop Color="#34B8C5" Offset="0.50" />
+                                                <GradientStop Color="#F2C14E" Offset="0.70" />
+                                                <GradientStop Color="#E76F51" Offset="0.85" />
+                                                <GradientStop Color="#B3261E" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
+                                    <TextBlock
+                                        Text="{Binding HeatmapMeaning}"
+                                        Margin="0,5,0,0"
+                                        Foreground="#A9B8CA"
+                                        TextWrapping="Wrap"
+                                    />
+                                </StackPanel>
+                                <UniformGrid Grid.Row="3" Columns="3" Margin="0,6,0,0">
                                     <TextBlock Text="{Binding MaxDisplacementMm,StringFormat=Max displacement: {0:F3} mm}" />
                                     <TextBlock Text="{Binding BrokenSpringCount,StringFormat=Broken links: {0}}" />
                                     <TextBlock Text="{Binding PeakContactForceKn,StringFormat=Peak contact: {0:F2} kN}" />
@@ -323,22 +497,550 @@
                         </StackPanel>
                     </Grid>
                 </TabItem>
+                <TabItem Header="Assembly">
+                    <Grid DataContext="{Binding Assembly}" Margin="22">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="360" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock
+                                Text="Impact Scene / Assembly"
+                                Style="{StaticResource PageTitleStyle}"
+                            />
+                            <TextBlock
+                                Text="Combine multiple STL/OBJ parts while preserving material, layer, transform and impact role."
+                                Foreground="#A9B8CA"
+                                Margin="0,4,0,10"
+                                TextWrapping="Wrap"
+                            />
+                            <WrapPanel>
+                                <Button
+                                    Content="Add STL / OBJ Parts..."
+                                    Click="AddAssemblyParts_Click"
+                                />
+                                <Button
+                                    Content="Remove Selected"
+                                    Click="RemoveAssemblyPart_Click"
+                                    Margin="8,0,0,0"
+                                />
+                                <Button
+                                    Content="Mark as Impactor"
+                                    Click="MarkAssemblyImpactor_Click"
+                                    Margin="8,0,0,0"
+                                />
+                                <Button
+                                    Content="Build Impact Scenario"
+                                    Click="BuildAssemblyScenario_Click"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Margin="16,0,0,0"
+                                />
+                            </WrapPanel>
+                            <TextBlock
+                                Text="{Binding Status}"
+                                Margin="0,10,0,10"
+                                TextWrapping="Wrap"
+                                Foreground="#7FD1AE"
+                                AutomationProperties.LiveSetting="Polite"
+                            />
+                        </StackPanel>
+                        <DataGrid
+                            Grid.Row="1"
+                            ItemsSource="{Binding Parts}"
+                            SelectedItem="{Binding SelectedPart}"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            Margin="0,0,18,0"
+                        >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Header="Part"
+                                    Binding="{Binding Name}"
+                                    Width="2*"
+                                />
+                                <DataGridTextColumn
+                                    Header="Role"
+                                    Binding="{Binding Role}"
+                                    Width="*"
+                                    IsReadOnly="True"
+                                />
+                                <DataGridTextColumn
+                                    Header="Material"
+                                    Binding="{Binding Material.DisplayName}"
+                                    Width="2*"
+                                    IsReadOnly="True"
+                                />
+                                <DataGridTextColumn
+                                    Header="Layer"
+                                    Binding="{Binding LayerIndex}"
+                                    Width="70"
+                                />
+                                <DataGridTextColumn
+                                    Header="Triangles"
+                                    Binding="{Binding TriangleCount}"
+                                    Width="90"
+                                    IsReadOnly="True"
+                                />
+                                <DataGridCheckBoxColumn
+                                    Header="Closed"
+                                    Binding="{Binding IsLikelyClosed}"
+                                    Width="65"
+                                    IsReadOnly="True"
+                                />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <ScrollViewer
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            VerticalScrollBarVisibility="Auto"
+                        >
+                            <StackPanel>
+                                <TextBlock Text="Assembly settings" FontWeight="SemiBold" />
+                                <TextBlock Text="Name" />
+                                <TextBox Text="{Binding AssemblyName,UpdateSourceTrigger=PropertyChanged}" />
+                                <UniformGrid Columns="3" Margin="0,8,0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="Cell (mm)" />
+                                        <TextBox Text="{Binding CellSizeMm}" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Duration (ms)" />
+                                        <TextBox Text="{Binding DurationMs}" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="dt (µs)" />
+                                        <TextBox Text="{Binding TimeStepMicroseconds}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                                <Separator />
+                                <TextBlock
+                                    Text="Selected part"
+                                    FontWeight="SemiBold"
+                                    Margin="0,10,0,4"
+                                />
+                                <TextBlock Text="Role" />
+                                <ComboBox
+                                    ItemsSource="{Binding Roles}"
+                                    SelectedItem="{Binding SelectedPart.Role}"
+                                />
+                                <TextBlock Text="Material" />
+                                <ComboBox
+                                    ItemsSource="{Binding Materials}"
+                                    SelectedItem="{Binding SelectedPart.Material}"
+                                    DisplayMemberPath="DisplayName"
+                                />
+                                <TextBlock Text="Source unit" />
+                                <ComboBox
+                                    ItemsSource="{Binding LengthUnits}"
+                                    SelectedItem="{Binding SelectedPart.SourceUnit}"
+                                />
+                                <UniformGrid Columns="2" Margin="0,8,0,10">
+                                    <StackPanel>
+                                        <TextBlock Text="Layer index" />
+                                        <TextBox Text="{Binding SelectedPart.LayerIndex}" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Thickness (mm)" />
+                                        <TextBox Text="{Binding SelectedPart.LayerThicknessMm}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                                <TextBlock Text="Translation XYZ (mm)" FontWeight="SemiBold" />
+                                <UniformGrid Columns="3">
+                                    <TextBox Text="{Binding SelectedPart.TranslationXmm}" />
+                                    <TextBox Text="{Binding SelectedPart.TranslationYmm}" />
+                                    <TextBox Text="{Binding SelectedPart.TranslationZmm}" />
+                                </UniformGrid>
+                                <TextBlock
+                                    Text="Rotation XYZ (deg)"
+                                    FontWeight="SemiBold"
+                                    Margin="0,8,0,0"
+                                />
+                                <UniformGrid Columns="3">
+                                    <TextBox Text="{Binding SelectedPart.RotationXDeg}" />
+                                    <TextBox Text="{Binding SelectedPart.RotationYDeg}" />
+                                    <TextBox Text="{Binding SelectedPart.RotationZDeg}" />
+                                </UniformGrid>
+                                <TextBlock
+                                    Text="Scale XYZ"
+                                    FontWeight="SemiBold"
+                                    Margin="0,8,0,0"
+                                />
+                                <UniformGrid Columns="3">
+                                    <TextBox Text="{Binding SelectedPart.ScaleX}" />
+                                    <TextBox Text="{Binding SelectedPart.ScaleY}" />
+                                    <TextBox Text="{Binding SelectedPart.ScaleZ}" />
+                                </UniformGrid>
+                                <TextBlock
+                                    Text="Linear velocity XYZ (m/s)"
+                                    FontWeight="SemiBold"
+                                    Margin="0,8,0,0"
+                                />
+                                <UniformGrid Columns="3">
+                                    <TextBox Text="{Binding SelectedPart.VelocityX}" />
+                                    <TextBox Text="{Binding SelectedPart.VelocityY}" />
+                                    <TextBox Text="{Binding SelectedPart.VelocityZ}" />
+                                </UniformGrid>
+                                <TextBlock
+                                    Text="Imported parts are assembled without destructive mesh union. This preserves material and contact identity."
+                                    TextWrapping="Wrap"
+                                    Foreground="#D8A95A"
+                                    Margin="0,12,0,0"
+                                />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </TabItem>
                 <TabItem Header="Import">
                     <Grid DataContext="{Binding Import}" Margin="22">
-                        <TextBlock
-                            Text="OBJ / STL / CAD imported geometry"
-                            FontSize="24"
-                            FontWeight="Bold"
-                        />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="360" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Margin="0,0,20,0">
+                            <TextBlock Text="Mesh Import" Style="{StaticResource PageTitleStyle}" />
+                            <TextBlock
+                                Text="OBJ / STL geometry with explicit units"
+                                Foreground="#A9B8CA"
+                                Margin="0,4,0,12"
+                            />
+                            <Button Content="Choose OBJ / STL..." Click="ImportMesh_Click" />
+                            <Button
+                                Content="Use Imported Mesh as Impact Target"
+                                Click="UseImportedTarget_Click"
+                                Margin="0,8,0,0"
+                                FontWeight="SemiBold"
+                            />
+                            <TextBlock Text="{Binding Path}" TextWrapping="Wrap" Margin="0,8,0,8" />
+                            <TextBlock Text="Source unit" />
+                            <ComboBox
+                                ItemsSource="{Binding LengthUnits}"
+                                SelectedItem="{Binding SourceUnit}"
+                            />
+                            <CheckBox
+                                Content="Center at origin"
+                                IsChecked="{Binding CenterAtOrigin}"
+                                Margin="0,8,0,0"
+                            />
+                            <CheckBox
+                                Content="Weld duplicate vertices"
+                                IsChecked="{Binding WeldVertices}"
+                                Margin="0,4,0,12"
+                            />
+                            <TextBlock Text="Target material" />
+                            <ComboBox
+                                ItemsSource="{Binding Materials}"
+                                SelectedItem="{Binding SelectedTargetMaterial}"
+                                DisplayMemberPath="DisplayName"
+                            />
+                            <TextBlock Text="Impactor material" />
+                            <ComboBox
+                                ItemsSource="{Binding Materials}"
+                                SelectedItem="{Binding SelectedImpactorMaterial}"
+                                DisplayMemberPath="DisplayName"
+                            />
+                            <TextBlock Text="Impact speed (m/s)" />
+                            <TextBox Text="{Binding ImpactSpeedMps,UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="Impactor diameter (mm)" />
+                            <TextBox Text="{Binding ImpactorDiameterMm,UpdateSourceTrigger=PropertyChanged}" />
+                            <Separator />
+                            <TextBlock
+                                Text="STL surface layer export"
+                                FontWeight="SemiBold"
+                                Margin="0,12,0,4"
+                            />
+                            <TextBlock Text="Layer count" />
+                            <TextBox Text="{Binding LayerCount,UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="Layer axis" />
+                            <ComboBox
+                                ItemsSource="{Binding LayerAxes}"
+                                SelectedItem="{Binding LayerAxis}"
+                            />
+                            <Button
+                                Content="Export STL Layers..."
+                                Click="SplitStl_Click"
+                                Margin="0,10,0,0"
+                            />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock
+                                Text="{Binding Status}"
+                                TextWrapping="Wrap"
+                                AutomationProperties.LiveSetting="Polite"
+                            />
+                            <TextBlock
+                                Text="Exported files"
+                                FontWeight="SemiBold"
+                                Margin="0,16,0,6"
+                            />
+                            <ListBox ItemsSource="{Binding LayerPaths}" MinHeight="180" />
+                            <TextBlock
+                                Text="Layer export partitions the source surface for authoring. A watertight volumetric layer model must be checked before continuum analysis."
+                                TextWrapping="Wrap"
+                                Foreground="#D8A95A"
+                                Margin="0,12,0,0"
+                            />
+                        </StackPanel>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Materials">
                     <Grid DataContext="{Binding Materials}" Margin="22">
-                        <TextBlock
-                            Text="Material profiles / constitutive laws"
-                            FontSize="24"
-                            FontWeight="Bold"
-                        />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="560" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.ColumnSpan="2">
+                            <TextBlock
+                                Text="Engineering Material Library"
+                                Style="{StaticResource PageTitleStyle}"
+                            />
+                            <TextBlock
+                                Text="Nominal built-in grades and project-specific user materials"
+                                Foreground="#A9B8CA"
+                                Margin="0,4,0,12"
+                            />
+                        </StackPanel>
+                        <DataGrid
+                            Grid.Row="1"
+                            ItemsSource="{Binding Entries}"
+                            SelectedItem="{Binding Selected}"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            CanUserAddRows="False"
+                            Margin="0,0,16,0"
+                        >
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Header="Material"
+                                    Binding="{Binding Definition.DisplayName}"
+                                    Width="2*"
+                                />
+                                <DataGridTextColumn
+                                    Header="Category"
+                                    Binding="{Binding Category}"
+                                    Width="*"
+                                />
+                                <DataGridTextColumn
+                                    Header="Density kg/m3"
+                                    Binding="{Binding Definition.DensityKgPerM3}"
+                                    Width="*"
+                                />
+                                <DataGridTextColumn
+                                    Header="E Pa"
+                                    Binding="{Binding Definition.YoungModulusPa}"
+                                    Width="*"
+                                />
+                                <DataGridTextColumn
+                                    Header="Yield Pa"
+                                    Binding="{Binding Definition.EffectiveYieldStrengthPa}"
+                                    Width="*"
+                                />
+                                <DataGridTextColumn
+                                    Header="UTS Pa"
+                                    Binding="{Binding Definition.UltimateTensileStrengthPa}"
+                                    Width="*"
+                                />
+                                <DataGridTextColumn
+                                    Header="Standard"
+                                    Binding="{Binding Definition.Standard}"
+                                    Width="2*"
+                                />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <ScrollViewer
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            VerticalScrollBarVisibility="Auto"
+                        >
+                            <StackPanel>
+                                <TextBlock
+                                    Text="Material data sheet"
+                                    FontWeight="SemiBold"
+                                    FontSize="16"
+                                />
+                                <TextBlock
+                                    Text="{Binding SelectedEvidenceSummary}"
+                                    Style="{StaticResource MutedTextStyle}"
+                                    Margin="0,4,0,8"
+                                />
+                                <UniformGrid Columns="2">
+                                    <StackPanel Margin="0,0,6,0">
+                                        <TextBlock Text="Project material ID" />
+                                        <TextBox Text="{Binding NewId}" />
+                                    </StackPanel>
+                                    <StackPanel Margin="6,0,0,0">
+                                        <TextBlock Text="Display name" />
+                                        <TextBox Text="{Binding NewName}" />
+                                    </StackPanel>
+                                </UniformGrid>
+                                <TabControl>
+                                    <TabItem Header="Physics">
+                                        <StackPanel Margin="10">
+                                            <TextBlock Text="Response model" />
+                                            <ComboBox
+                                                ItemsSource="{Binding ResponseKinds}"
+                                                SelectedItem="{Binding ResponseKind}"
+                                            />
+                                            <UniformGrid Columns="2">
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Density (kg/m³)" />
+                                                    <TextBox Text="{Binding DensityKgPerM3}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Young modulus (GPa)" />
+                                                    <TextBox Text="{Binding YoungModulusGPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Poisson ratio" />
+                                                    <TextBox Text="{Binding PoissonRatio}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Damping ratio" />
+                                                    <TextBox Text="{Binding DampingRatio}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Yield strength (MPa)" />
+                                                    <TextBox Text="{Binding YieldStrengthMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Ultimate strength (MPa)" />
+                                                    <TextBox Text="{Binding UltimateStrengthMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Failure strain" />
+                                                    <TextBox Text="{Binding FailureStrain}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Tangent modulus (GPa)" />
+                                                    <TextBox Text="{Binding TangentModulusGPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Compression scale" />
+                                                    <TextBox Text="{Binding CompressiveStrengthScale}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Rate sensitivity" />
+                                                    <TextBox Text="{Binding RateSensitivity}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Thermal conductivity W/(m·K)" />
+                                                    <TextBox Text="{Binding ThermalConductivity}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Specific heat J/(kg·K)" />
+                                                    <TextBox Text="{Binding SpecificHeat}" />
+                                                </StackPanel>
+                                            </UniformGrid>
+                                            <TextBlock Text="Display colour (#RRGGBB)" />
+                                            <TextBox Text="{Binding ColorHex}" />
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Evidence">
+                                        <StackPanel Margin="10">
+                                            <TextBlock Text="Standard / grade" />
+                                            <TextBox Text="{Binding Standard}" />
+                                            <TextBlock Text="Source name" />
+                                            <TextBox Text="{Binding SourceName}" />
+                                            <TextBlock Text="Source URI" />
+                                            <TextBox Text="{Binding SourceUri}" />
+                                            <TextBlock Text="Specification / test procedure" />
+                                            <TextBox Text="{Binding Specification}" />
+                                            <TextBlock Text="Batch / lot / specimen" />
+                                            <TextBox Text="{Binding BatchOrLot}" />
+                                            <TextBlock Text="Notes" />
+                                            <TextBox
+                                                Text="{Binding Notes}"
+                                                AcceptsReturn="True"
+                                                Height="70"
+                                                TextWrapping="Wrap"
+                                            />
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Curves">
+                                        <StackPanel Margin="10">
+                                            <TextBlock Text="Tensile curve — one row: strain, stress_MPa" />
+                                            <TextBox
+                                                Text="{Binding TensileCurveText}"
+                                                AcceptsReturn="True"
+                                                Height="130"
+                                                FontFamily="Consolas"
+                                                VerticalScrollBarVisibility="Auto"
+                                            />
+                                            <TextBlock Text="Compressive curve — optional" />
+                                            <TextBox
+                                                Text="{Binding CompressiveCurveText}"
+                                                AcceptsReturn="True"
+                                                Height="100"
+                                                FontFamily="Consolas"
+                                                VerticalScrollBarVisibility="Auto"
+                                            />
+                                        </StackPanel>
+                                    </TabItem>
+                                    <TabItem Header="Uncertainty">
+                                        <StackPanel Margin="10">
+                                            <UniformGrid Columns="2">
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Yield minimum (MPa)" />
+                                                    <TextBox Text="{Binding YieldMinimumMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Yield maximum (MPa)" />
+                                                    <TextBox Text="{Binding YieldMaximumMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="Young minimum (GPa)" />
+                                                    <TextBox Text="{Binding YoungMinimumGPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Young maximum (GPa)" />
+                                                    <TextBox Text="{Binding YoungMaximumGPa}" />
+                                                </StackPanel>
+                                            </UniformGrid>
+                                            <Separator />
+                                            <TextBlock Text="Calibration model" />
+                                            <TextBox Text="{Binding CalibrationModel}" />
+                                            <UniformGrid Columns="2">
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="RMSE (MPa)" />
+                                                    <TextBox Text="{Binding CalibrationRmseMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="MAE (MPa)" />
+                                                    <TextBox Text="{Binding CalibrationMaeMPa}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="0,0,6,0">
+                                                    <TextBlock Text="R²" />
+                                                    <TextBox Text="{Binding CalibrationRSquared}" />
+                                                </StackPanel>
+                                                <StackPanel Margin="6,0,0,0">
+                                                    <TextBlock Text="Sample count" />
+                                                    <TextBox Text="{Binding CalibrationSampleCount}" />
+                                                </StackPanel>
+                                            </UniformGrid>
+                                        </StackPanel>
+                                    </TabItem>
+                                </TabControl>
+                                <Button
+                                    Content="Save as Project Material"
+                                    Command="{Binding AddMaterialCommand}"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    Margin="0,10,0,0"
+                                />
+                                <TextBlock
+                                    Text="{Binding Status}"
+                                    TextWrapping="Wrap"
+                                    Margin="0,10,0,0"
+                                    AutomationProperties.LiveSetting="Polite"
+                                />
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Loads">
@@ -371,16 +1073,131 @@
                 </TabItem>
                 <TabItem Header="Verification">
                     <Grid DataContext="{Binding Verification}" Margin="22">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
                         <StackPanel>
-                            <TextBlock Text="Verification" FontSize="24" FontWeight="Bold" />
+                            <TextBlock
+                                Text="Verification"
+                                Style="{StaticResource PageTitleStyle}"
+                            />
                             <TextBlock
                                 Text="Compiled numerical benchmarks and portable integrity checks are reported separately."
                                 Foreground="#A9B8CA"
                                 Margin="0,8,0,0"
                             />
                             <TextBlock Text="{Binding BenchmarkSummary}" Margin="0,8,0,0" />
+                            <TextBlock
+                                Text="{Binding RunValiditySummary}"
+                                FontWeight="SemiBold"
+                                Margin="0,8,0,0"
+                            />
                         </StackPanel>
+                        <DataGrid
+                            Grid.Row="1"
+                            ItemsSource="{Binding RunValidityChecks}"
+                            AutoGenerateColumns="True"
+                            IsReadOnly="True"
+                            CanUserAddRows="False"
+                            Margin="0,12,0,0"
+                        />
                     </Grid>
+                </TabItem>
+                <TabItem Header="Mobility">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Grid DataContext="{Binding Mobility}" Margin="22">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" />
+                                <ColumnDefinition Width="350" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Margin="0,0,20,0">
+                                <TextBlock Text="Vehicle Profile" FontSize="24" FontWeight="Bold" />
+                                <TextBlock Text="Name" />
+                                <TextBox Text="{Binding VehicleName}" />
+                                <TextBlock Text="Mass (kg)" />
+                                <TextBox Text="{Binding MassKg}" />
+                                <TextBlock Text="Ground contact area (m²)" />
+                                <TextBox Text="{Binding ContactAreaM2}" />
+                                <TextBlock Text="Ground clearance (m)" />
+                                <TextBox Text="{Binding GroundClearanceM}" />
+                                <TextBlock Text="Maximum slope (deg)" />
+                                <TextBox Text="{Binding MaximumSlopeDeg}" />
+                                <TextBlock Text="Maximum step height (m)" />
+                                <TextBox Text="{Binding MaximumStepM}" />
+                                <TextBlock Text="Maximum water depth (m)" />
+                                <TextBox Text="{Binding MaximumWaterDepthM}" />
+                                <TextBlock Text="Target speed (m/s)" />
+                                <TextBox Text="{Binding TargetSpeedMps}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                                <TextBlock Text="Terrain Cell" FontSize="24" FontWeight="Bold" />
+                                <TextBlock Text="Slope (deg)" />
+                                <TextBox Text="{Binding TerrainSlopeDeg}" />
+                                <TextBlock Text="Roughness (m)" />
+                                <TextBox Text="{Binding TerrainRoughnessM}" />
+                                <TextBlock Text="Obstacle height (m)" />
+                                <TextBox Text="{Binding ObstacleHeightM}" />
+                                <TextBlock Text="Bearing strength (kPa)" />
+                                <TextBox Text="{Binding BearingStrengthKPa}" />
+                                <TextBlock Text="Friction coefficient" />
+                                <TextBox Text="{Binding FrictionCoefficient}" />
+                                <TextBlock Text="Water depth (m)" />
+                                <TextBox Text="{Binding WaterDepthM}" />
+                                <TextBlock
+                                    Text="Supporting structure capacity (kN, 0=ground)"
+                                    TextWrapping="Wrap"
+                                />
+                                <TextBox Text="{Binding StructuralCapacityKn}" />
+                                <Button
+                                    Content="Assess Traversability"
+                                    Command="{Binding AssessCommand}"
+                                    Margin="0,12,0,0"
+                                    FontWeight="SemiBold"
+                                />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock
+                                    Text="Decision Support"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                />
+                                <TextBlock
+                                    Text="{Binding Status}"
+                                    TextWrapping="Wrap"
+                                    Margin="0,8,0,12"
+                                    AutomationProperties.LiveSetting="Polite"
+                                />
+                                <DataGrid
+                                    ItemsSource="{Binding Reasons}"
+                                    AutoGenerateColumns="True"
+                                    IsReadOnly="True"
+                                    CanUserAddRows="False"
+                                    MinHeight="120"
+                                />
+                                <Separator Margin="0,16" />
+                                <TextBlock
+                                    Text="ML Dataset Bootstrap"
+                                    FontSize="18"
+                                    FontWeight="SemiBold"
+                                />
+                                <TextBlock
+                                    Text="Exports numeric features, labels, and a JSON schema compatible with TensorFlow CSV input. Synthetic labels mirror the screening equations and are not field truth."
+                                    TextWrapping="Wrap"
+                                    Foreground="#A9B8CA"
+                                    Margin="0,6,0,8"
+                                />
+                                <TextBlock Text="Synthetic rows" />
+                                <TextBox Text="{Binding SyntheticDatasetRows}" />
+                                <Button
+                                    Content="Export TensorFlow Dataset..."
+                                    Click="ExportMobilityDataset_Click"
+                                    Margin="0,10,0,0"
+                                />
+                            </StackPanel>
+                        </Grid>
+                    </ScrollViewer>
                 </TabItem>
                 <TabItem Header="Post-processing">
                     <Grid DataContext="{Binding PostProcessing}" Margin="22">
@@ -402,7 +1219,10 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Results Explorer" FontSize="24" FontWeight="Bold" />
+                        <TextBlock
+                            Text="Results Explorer"
+                            Style="{StaticResource PageTitleStyle}"
+                        />
                         <Grid Grid.Row="1" Margin="0,12,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />

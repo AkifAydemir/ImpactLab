@@ -23,6 +23,14 @@ ImpactLab turns an engineering scenario into a traceable workflow: define geomet
 - End-to-end product surface: scenario migration, mesh import/repair, parameter sweeps, uncertainty and optimization tools, result streaming, probes, charts, reports, and run archives.
 - Process boundaries where they matter: experiment workers and untrusted extensions use versioned IPC contracts; extension trust and compatibility policies are explicit.
 - Verification is part of the architecture: analytical benchmarks, reference-signal comparison, schema migration tests, deterministic report checks, integrity audits, and CI evidence artifacts.
+- Portable `.impactlab` packages keep the scenario, user materials, and imported STL/OBJ assets in one file.
+- A restrained desktop UI replaces duplicate tab chrome with a single navigation rail, compact command bar, consistent engineering controls, and a first-run Start workspace for quick impact, imported assemblies, projects, and examples.
+- The **Assembly** workspace combines multiple STL/OBJ files as traceable parts instead of flattening them: each part keeps its role, material, layer index, source unit, translation, rotation, scale, and initial velocity. Imported meshes can be deformable targets or moving rigid impactors.
+- Completed runs can be exported as an animated GIF, or as H.264 MP4 when FFmpeg is available, plus a JSON timeline containing the physical time of every frame.
+- The material catalog includes 15 named engineering grades/alloys/polymers/ceramics plus user-defined records with nominal yield/ultimate strength and specification metadata.
+- STL surfaces can be partitioned along an axis and written back as layers; detailed CSV export includes nodal displacement, speed, damage, equivalent strain, approximate equivalent stress, and yield safety factor.
+- Every run receives an automated validity screen for time step, energy balance, contact penetration, material traceability, finite numerical state, and coarse mesh resolution.
+- A general-purpose **Mobility** workspace turns vehicle/terrain data into traversability, risk reasons, and route cost; it includes an A* planner around blocked cells and TensorFlow-ready CSV/schema export.
 
 ## How the workbench is built
 
@@ -57,6 +65,8 @@ The current Windows release candidate was rebuilt from source on .NET 8 with ana
 | GitHub Actions | **Passed** — Windows integrity audits, formatting, Release build, and tests in the [published workflow run](https://github.com/AkifAydemir/ImpactLab/actions/runs/35299671087) |
 
 See [validation details](docs/VALIDATION.md) for the exact commands and claim boundaries.
+The extensible multi-model solver direction and fidelity rules are recorded in the
+[physics-engine architecture](docs/PHYSICS_ENGINE_ARCHITECTURE.md).
 
 The workflow also runs on subsequent pushes; check [current runs](https://github.com/AkifAydemir/ImpactLab/actions) for their status. Current desktop package version: **1.0.0**.
 
@@ -125,7 +135,7 @@ material calibration, and comparison with independent measurements.
 ## Start with the verified interactive path
 
 1. Open **Simulation → Quick Impact Sandbox** in the Windows Release app.
-2. Set **Mesh cell size** to `20 mm` and **Time step** to `20 µs`; leave the other default inputs unchanged.
+2. Start with **Mesh cell size** at `20 mm` and **Time step** at `1.5 µs`; inspect the explicit time-step gate in the run report.
 3. Select **Run Quick Impact**. The representative run captured above completed with a 3D scene and 31 telemetry samples.
 
 For a second UI path, select the built-in **Plate impact study**, keep **Explicit Lattice Dynamics**, and choose **Solve**. The Release app completed this coarse preset and opened **Results Explorer** at frame `15`. This verifies the workflow transition and result-row generation, not meaningful impact response or physical accuracy. The stronger visual demonstration remains Quick Impact above.
@@ -171,6 +181,8 @@ Small, reviewable changes are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md) fo
 ImpactLab demonstrates software architecture and numerical engineering practice. Passing tests show that the implemented contracts and included analytical/reference cases behave as expected; they do **not** establish predictive accuracy for arbitrary real-world structures. Production use would require convergence studies, experimental correlation, broader element/contact validation, material calibration, and independent review.
 
 That boundary is deliberate: the project aims to make assumptions and evidence visible instead of hiding them behind impressive screenshots.
+
+STL layer export groups triangles by centroid; it does not geometrically cut crossing triangles or create closed volumetric layers. Assembly import preserves independent parts and contact identity; it is not a CAD boolean union. Validate watertight volume geometry, part alignment, contact pairs, mesh convergence, and the explicit time step before continuum analysis. Built-in material data is nominal room-temperature reference data and must be replaced or confirmed with a manufacturer datasheet or test certificate for a real component. GIF output is an engineering visualization of stored solver frames, not additional physical evidence.
 
 ## License
 

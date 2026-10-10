@@ -36,8 +36,11 @@ public sealed class ImpulseLoad : ILoadSource
     {
         if (timeSeconds < 0.0 || timeSeconds > DurationSeconds || Selection.IsEmpty)
             return;
-        var forcePerNode = TotalImpulseNs / DurationSeconds / Selection.Count;
-        foreach (var id in Selection.NodeIds)
+        var activeNodes = Selection.NodeIds.Where(id => state.IsActive[id]).ToArray();
+        if (activeNodes.Length == 0)
+            return;
+        var forcePerNode = TotalImpulseNs / DurationSeconds / activeNodes.Length;
+        foreach (var id in activeNodes)
             state.Force[id] += Direction * forcePerNode;
     }
 }

@@ -11,4 +11,7 @@ public enum ResultFieldKind
     VelocityX,
     VelocityY,
     VelocityZ,
+    EquivalentStrain,
+    EquivalentStress,
+    YieldSafetyFactor,
 }

@@ -12,7 +12,7 @@ public static class GeometryContact
     )
     {
         var local = transform.InverseTransformPoint(point);
-        var geometryLocal = local - geometry.Center;
+        var geometryLocal = local;
         var localSample = geometry switch
         {
             SphereSpec sphere => SampleSphere(geometryLocal, sphere.Radius),

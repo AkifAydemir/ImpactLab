@@ -21,7 +21,7 @@ public static class ScenarioPresetLibrary
             Settings = new SimulationSettings
             {
                 DurationSeconds = 0.003,
-                TimeStepSeconds = 0.00002,
+                TimeStepSeconds = 0.000002,
                 SnapshotStride = 10,
                 TelemetryStride = 5,
             },

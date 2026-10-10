@@ -14,6 +14,9 @@ public sealed class ScenarioDefinition
     public ContinuumAnalysisSettings Continuum { get; set; } = new();
     public SimulationSettings Settings { get; set; } = new();
     public ContactSettings ContactSettings { get; set; } = ContactSettings.Default;
+    public ScenarioPhysicsConfiguration Physics { get; set; } = new();
+    public ScenarioEnvironmentDefinition? Environment { get; set; } =
+        ScenarioEnvironmentCatalog.EarthSeaLevelTemplate;
     public List<ScenarioPartDefinition> Parts { get; } = [];
     public List<ScenarioRigidBodyDefinition> RigidBodies { get; } = [];
     public List<ScenarioContactDefinition> Contacts { get; } = [];
@@ -32,8 +35,16 @@ public sealed class ScenarioDefinition
         Meshing.Validate();
         if (Parts.Count == 0)
             throw new InvalidOperationException("Scenario must contain at least one part.");
+        if (RigidBodies.Any(x => x.MassOverrideKg is <= 0))
+            throw new InvalidOperationException("Rigid-body mass overrides must be positive.");
+        if (Environment is not null)
+        {
+            Environment.Validate();
+            Settings = Settings with { Gravity = Environment.GravityMps2 };
+        }
         Settings.Validate();
         ContactSettings.Validate();
+        Physics.Validate();
         Continuum.Validate();
     }
 }

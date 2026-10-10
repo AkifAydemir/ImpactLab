@@ -1,11 +1,13 @@
 using ImpactLab.Core.Diagnostics;
 using ImpactLab.Core.Materials;
+using ImpactLab.Core.Physics;
 
 namespace ImpactLab.Core.Backends;
 
 public sealed class SimulationExecutionContext
 {
     public MaterialExecutionContext? Materials { get; init; }
+    public PhysicsModelRegistry PhysicsModels { get; init; } = PhysicsModelRegistry.CreateDefault();
     public PerformanceTrace Performance { get; init; } = new();
     public double DefaultTemperatureKelvin { get; init; } = 293.15;
     public bool CaptureNumericalHealth { get; init; } = true;

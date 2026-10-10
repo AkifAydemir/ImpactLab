@@ -1,3 +1,4 @@
+using ImpactLab.Core.Fracture;
 using ImpactLab.Core.Mathematics;
 
 namespace ImpactLab.Core.Simulation;
@@ -14,6 +15,9 @@ public sealed record SimulationSettings
     public int MaxSteps { get; init; } = 2_000_000;
     public bool EnforceStabilityEstimate { get; init; }
     public bool EnableDeformableContact { get; init; } = true;
+    public bool EnableFragmentSelfContact { get; init; } = true;
+    public bool EnableCoarseFragmentIntegration { get; init; }
+    public FragmentRepresentationSettings FragmentRepresentation { get; init; } = new();
     public int StepCount
     {
         get
@@ -39,5 +43,6 @@ public sealed record SimulationSettings
             throw new InvalidOperationException("Velocity damping must be in [0, 1).");
         if (AngularVelocityDamping is < 0.0 or >= 1.0)
             throw new InvalidOperationException("Angular damping must be in [0, 1).");
+        FragmentRepresentation.Validate();
     }
 }

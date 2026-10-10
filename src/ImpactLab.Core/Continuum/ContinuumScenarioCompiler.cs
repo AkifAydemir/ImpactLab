@@ -32,7 +32,12 @@ public static class ContinuumScenarioCompiler
                                 part.ImportedMeshPath
                                     ?? throw new InvalidOperationException(
                                         $"Part {part.Id} has no imported mesh path."
-                                    )
+                                    ),
+                                new MeshImportOptions(
+                                    part.ImportedMeshUnit,
+                                    part.CenterImportedMesh,
+                                    part.WeldImportedMesh
+                                )
                             )
                             .Asset,
                         ImpactLab.Core.Mathematics.Vec3.Zero

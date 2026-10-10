@@ -5,4 +5,7 @@ public enum HeatmapMode
     Damage,
     Displacement,
     Speed,
+    EquivalentStrain,
+    EquivalentStress,
+    YieldUtilization,
 }

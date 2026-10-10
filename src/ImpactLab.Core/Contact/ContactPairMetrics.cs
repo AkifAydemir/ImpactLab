@@ -7,5 +7,7 @@ public readonly record struct ContactPairMetrics(
     double MaxPenetrationMeters,
     double TotalNormalForceN,
     double TotalTangentialForceN,
-    double DissipatedFrictionEnergyJ
+    double DissipatedFrictionEnergyJ,
+    double StoredNormalPenaltyEnergyJ = 0.0,
+    double DissipatedNormalDampingEnergyJ = 0.0
 );

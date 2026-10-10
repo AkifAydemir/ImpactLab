@@ -36,7 +36,7 @@ public sealed class StatefulNonlinearAssembler : INonlinearContinuumAssembler
         {
             ct.ThrowIfCancellationRequested();
             var kinematics = TetraElementKinematics.FromDisplacement(mesh, element, u);
-            var yieldStress = element.Material.YoungModulusPa * element.Material.YieldStrain;
+            var yieldStress = element.Material.EffectiveYieldStrengthPa;
             IHardeningLaw hardening = new LinearIsotropicHardening(
                 yieldStress,
                 element.Material.TangentModulusPa

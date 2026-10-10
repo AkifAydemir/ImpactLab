@@ -2,8 +2,10 @@ namespace ImpactLab.App.ViewModels;
 
 public enum WorkspaceTab
 {
+    Start,
     Simulation,
     Geometry,
+    Assembly,
     Import,
     Materials,
     Loads,
@@ -11,6 +13,7 @@ public enum WorkspaceTab
     Experiments,
     Calibration,
     Verification,
+    Mobility,
     PostProcessing,
     Results,
     Charts,

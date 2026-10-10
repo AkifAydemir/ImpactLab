@@ -1,10 +1,24 @@
 using ImpactLab.Core.IO;
+using ImpactLab.Core.Materials;
+using ImpactLab.Core.Projects;
 using ImpactLab.Core.Scenarios;
 
 namespace ImpactLab.App.Services;
 
 public sealed class ScenarioWorkspaceService
 {
+    private readonly MaterialCatalog? _materials;
+    private readonly MaterialProfileCatalog? _profiles;
+
+    public ScenarioWorkspaceService(
+        MaterialCatalog? materials = null,
+        MaterialProfileCatalog? profiles = null
+    )
+    {
+        _materials = materials;
+        _profiles = profiles;
+    }
+
     public string? CurrentPath { get; private set; }
     public ScenarioDefinition Current { get; private set; } = new();
     public bool IsDirty { get; private set; }
@@ -25,7 +39,31 @@ public sealed class ScenarioWorkspaceService
 
     public void Open(string path)
     {
-        Current = ScenarioEnvelopeSerializer.Load(path);
+        if (
+            string.Equals(
+                Path.GetExtension(path),
+                ImpactLabProjectPackage.FileExtension,
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
+        {
+            var cache = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "ImpactLab",
+                "project-cache"
+            );
+            var project = ImpactLabProjectPackage.Load(path, cache);
+            foreach (var profile in project.Materials)
+            {
+                _materials?.ReplaceUser(profile.Definition, "Project material", profile.Notes);
+                _profiles?.Upsert(profile);
+            }
+            Current = project.Scenario;
+        }
+        else
+        {
+            Current = ScenarioEnvelopeSerializer.Load(path);
+        }
         CurrentPath = path;
         IsDirty = false;
     }
@@ -34,7 +72,27 @@ public sealed class ScenarioWorkspaceService
     {
         var target =
             path ?? CurrentPath ?? throw new InvalidOperationException("Scenario has no path.");
-        ScenarioEnvelopeSerializer.Save(target, Current);
+        if (
+            string.Equals(
+                Path.GetExtension(target),
+                ImpactLabProjectPackage.FileExtension,
+                StringComparison.OrdinalIgnoreCase
+            )
+        )
+        {
+            var customProfiles =
+                _materials is null || _profiles is null
+                    ? []
+                    : _materials
+                        .Entries.Where(x => !x.IsBuiltIn)
+                        .Select(x => _profiles.Get(x.Definition.Id))
+                        .ToArray();
+            ImpactLabProjectPackage.Save(target, Current, customProfiles);
+        }
+        else
+        {
+            ScenarioEnvelopeSerializer.Save(target, Current);
+        }
         CurrentPath = target;
         IsDirty = false;
     }

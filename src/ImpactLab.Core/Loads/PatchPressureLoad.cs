@@ -39,6 +39,8 @@ public sealed class PatchPressureLoad : ILoadSource
             return;
         foreach (var id in Selection.NodeIds)
         {
+            if (!state.IsActive[id])
+                continue;
             var area = mesh.Nodes[id].CellSize * mesh.Nodes[id].CellSize;
             state.Force[id] += Normal * (pressure * area);
         }

@@ -45,6 +45,7 @@ public sealed class AdvancedLatticeSolver
         var peakN = 0d;
         var peakT = 0d;
         var friction = 0d;
+        var contactDamping = 0d;
         var maxDisp = 0d;
         foreach (var c in request.Compiled.Constraints)
             c.Apply(mesh, state);
@@ -77,6 +78,8 @@ public sealed class AdvancedLatticeSolver
             var stepN = 0d;
             var stepT = 0d;
             var stepF = 0d;
+            var stepContactPotential = 0d;
+            var stepContactDamping = 0d;
             using (
                 perf.Measure(
                     PerformanceStage.RigidContact,
@@ -108,6 +111,8 @@ public sealed class AdvancedLatticeSolver
                     stepN += m.TotalNormalForceN;
                     stepT += m.TotalTangentialForceN;
                     stepF += m.DissipatedFrictionEnergyJ;
+                    stepContactPotential += m.StoredNormalPenaltyEnergyJ;
+                    stepContactDamping += m.DissipatedNormalDampingEnergyJ;
                 }
             foreach (var k in request.Compiled.KinematicConstraints)
                 k.Apply(time, mesh, state, KinematicConstraintPhase.PreForce);
@@ -122,6 +127,7 @@ public sealed class AdvancedLatticeSolver
             foreach (var b in bodies)
                 IntegrateRigid(b, settings);
             friction += stepF;
+            contactDamping += stepContactDamping;
             var kinetic = Kinetic(mesh, state);
             var rot = bodies.Sum(RotationalKineticEnergy);
             peakK = Math.Max(peakK, kinetic + rot);
@@ -146,7 +152,9 @@ public sealed class AdvancedLatticeSolver
                         stepN,
                         stepT,
                         friction,
-                        deformPairs.Sum(x => x.ContactCount)
+                        deformPairs.Sum(x => x.ContactCount),
+                        stepContactPotential,
+                        contactDamping
                     )
                 );
             if (step % settings.SnapshotStride == 0 || step == settings.StepCount)
@@ -165,7 +173,9 @@ public sealed class AdvancedLatticeSolver
                         stepPen,
                         stepN,
                         stepT,
-                        friction
+                        friction,
+                        stepContactPotential,
+                        contactDamping
                     )
                 );
             if (
@@ -394,7 +404,9 @@ public sealed class AdvancedLatticeSolver
         double pen,
         double nf,
         double tf,
-        double friction
+        double friction,
+        double contactPotential,
+        double contactDamping
     )
     {
         var damage = new double[mesh.Nodes.Count];
@@ -432,7 +444,9 @@ public sealed class AdvancedLatticeSolver
             pen,
             nf,
             tf,
-            friction
+            friction,
+            contactPotential,
+            contactDamping
         );
     }
 }

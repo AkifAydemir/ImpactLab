@@ -42,6 +42,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
     private int _currentFrameIndex;
     private int _frameCount;
     private double _frameTimeMs;
+    private string _heatmapRange = "Range: -";
+    private string _heatmapMeaning = "Select and run a scenario to inspect field provenance.";
     private SimulationMesh? _lastMesh;
     private SimulationResult? _lastResult;
     private IReadOnlyList<RigidBodyDefinition> _lastRigidBodies = [];
@@ -123,7 +125,7 @@ public sealed class MainViewModel : INotifyPropertyChanged
     public double ImpactorLengthMm { get; set; } = 70.0;
     public double ImpactSpeedMps { get; set; } = 30.0;
     public double SimulationDurationMs { get; set; } = 3.0;
-    public double TimeStepMicroseconds { get; set; } = 2.0;
+    public double TimeStepMicroseconds { get; set; } = 0.5;
     public bool IsRunning
     {
         get => _isRunning;
@@ -201,6 +203,16 @@ public sealed class MainViewModel : INotifyPropertyChanged
     {
         get => _frameTimeMs;
         private set => SetField(ref _frameTimeMs, value);
+    }
+    public string HeatmapRange
+    {
+        get => _heatmapRange;
+        private set => SetField(ref _heatmapRange, value);
+    }
+    public string HeatmapMeaning
+    {
+        get => _heatmapMeaning;
+        private set => SetField(ref _heatmapMeaning, value);
     }
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -406,7 +418,8 @@ public sealed class MainViewModel : INotifyPropertyChanged
             return;
         var index = Math.Clamp(CurrentFrameIndex, 0, _lastResult.Frames.Count - 1);
         var frame = _lastResult.Frames[index];
-        var visual = MeshSceneBuilder.Build(_lastMesh, frame, SelectedHeatmap);
+        var rendered = MeshSceneBuilder.BuildDetailed(_lastMesh, frame, SelectedHeatmap);
+        var visual = rendered.Scene;
         for (var i = 0; i < frame.RigidBodies.Count && i < _lastRigidBodies.Count; i++)
         {
             visual.Children.Add(
@@ -414,6 +427,11 @@ public sealed class MainViewModel : INotifyPropertyChanged
             );
         }
         Scene = visual;
+        HeatmapRange = $"Range: {rendered.Minimum:G4} to {rendered.Maximum:G4} {rendered.Unit}";
+        HeatmapMeaning =
+            $"{rendered.Metadata.DisplayName}: {rendered.Metadata.QuantityDefinition} "
+            + rendered.Metadata.DescribeScale(rendered.DisplayMaximum, rendered.Unit)
+            + $" Caution: {rendered.Metadata.InterpretationWarning}";
         FrameTimeMs = frame.TimeSeconds * 1000.0;
     }
 

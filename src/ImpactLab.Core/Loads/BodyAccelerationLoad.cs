@@ -31,6 +31,7 @@ public sealed class BodyAccelerationLoad : ILoadSource
     {
         var factor = Scale?.Evaluate(timeSeconds) ?? 1.0;
         foreach (var id in Selection.NodeIds)
-            state.Force[id] += AccelerationMps2 * (mesh.Nodes[id].MassKg * factor);
+            if (state.IsActive[id])
+                state.Force[id] += AccelerationMps2 * (mesh.Nodes[id].MassKg * factor);
     }
 }

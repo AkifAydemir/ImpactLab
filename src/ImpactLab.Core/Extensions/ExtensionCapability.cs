@@ -10,4 +10,5 @@ public enum ExtensionCapability
     ReportContributor = 8,
     VerificationProvider = 16,
     WorkspaceTool = 32,
+    PhysicsModel = 64,
 }

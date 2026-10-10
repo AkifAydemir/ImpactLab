@@ -1,4 +1,8 @@
+using ImpactLab.Core.Contact;
+using ImpactLab.Core.Fracture;
+using ImpactLab.Core.Materials;
 using ImpactLab.Core.Physics;
+using ImpactLab.Core.Scenarios;
 
 namespace ImpactLab.Core.Backends;
 
@@ -26,7 +30,45 @@ public sealed class ExplicitLatticeBackend : ISimulationBackend
     )
     {
         var c = request.Compiled;
-        var result = new ExplicitLatticeSolver(new MaterialResponseDamageModel()).Run(
+        var physicsModels = request.Context?.PhysicsModels ?? PhysicsModelRegistry.CreateDefault();
+        var damageModelId =
+            request.SourceScenario?.Physics.DamageModelId
+            ?? ScenarioPhysicsConfiguration.DefaultDamageModelId;
+        var rigidContactModelId =
+            request.SourceScenario?.Physics.RigidContactModelId
+            ?? ScenarioPhysicsConfiguration.DefaultRigidContactModelId;
+        var deformableContactModelId =
+            request.SourceScenario?.Physics.DeformableContactModelId
+            ?? ScenarioPhysicsConfiguration.DefaultDeformableContactModelId;
+        var constitutiveModelId =
+            request.SourceScenario?.Physics.LatticeConstitutiveModelId
+            ?? ScenarioPhysicsConfiguration.DefaultLatticeConstitutiveModelId;
+        var fragmentTopologyModelId =
+            request.SourceScenario?.Physics.FragmentTopologyModelId
+            ?? ScenarioPhysicsConfiguration.DefaultFragmentTopologyModelId;
+        physicsModels.ResolvePlan(
+            request
+                .SourceScenario?.Physics.AdditionalModelIds.Prepend(deformableContactModelId)
+                .Prepend(rigidContactModelId)
+                .Prepend(constitutiveModelId)
+                .Prepend(fragmentTopologyModelId)
+                .Prepend(damageModelId)
+                ??
+                [
+                    damageModelId,
+                    fragmentTopologyModelId,
+                    constitutiveModelId,
+                    rigidContactModelId,
+                    deformableContactModelId,
+                ]
+        );
+        var result = new ExplicitLatticeSolver(
+            physicsModels.Create<IDamageModel>(damageModelId),
+            physicsModels.Create<IRigidContactModel>(rigidContactModelId),
+            physicsModels.Create<IDeformableContactModelFactory>(deformableContactModelId),
+            physicsModels.Create<ILatticeConstitutiveModel>(constitutiveModelId),
+            physicsModels.Create<IFragmentTopologyModel>(fragmentTopologyModelId)
+        ).Run(
             c.Mesh,
             request.Settings,
             c.Loads,

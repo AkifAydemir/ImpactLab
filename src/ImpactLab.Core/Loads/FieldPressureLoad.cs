@@ -40,6 +40,8 @@ public sealed class FieldPressureLoad : ILoadSource
             return;
         foreach (var id in Selection.NodeIds)
         {
+            if (!state.IsActive[id])
+                continue;
             var scale = SpatialField.Sample(state.Position[id], timeSeconds);
             if (Math.Abs(scale) <= 1e-18)
                 continue;

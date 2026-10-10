@@ -14,6 +14,9 @@ public static class ResultQueryEngine
         if (result.Frames.Count == 0)
             return [];
         var frame = result.Frames[Math.Clamp(query.FrameIndex, 0, result.Frames.Count - 1)];
+        var derived = RequiresDerivedField(query.Field)
+            ? LatticeDerivedFieldCalculator.Evaluate(mesh, frame)
+            : null;
         var rows = new List<NodeResultRecord>();
         for (var i = 0; i < mesh.Nodes.Count && rows.Count < Math.Max(1, query.Limit); i++)
         {
@@ -26,12 +29,21 @@ public static class ResultQueryEngine
             var position = frame.Position[i];
             if (query.Bounds is { } bounds && !bounds.Contains(position))
                 continue;
-            var value = Value(query.Field, mesh, node.Id, frame);
+            var value = Value(query.Field, mesh, node.Id, frame, derived);
             if (query.MinimumValue is { } min && value < min)
                 continue;
             if (query.MaximumValue is { } max && value > max)
                 continue;
-            rows.Add(new NodeResultRecord(i, node.PartId, position, value, frame.NodeDamage[i]));
+            rows.Add(
+                new NodeResultRecord(
+                    i,
+                    node.PartId,
+                    position,
+                    value,
+                    Unit(query.Field),
+                    frame.NodeDamage[i]
+                )
+            );
         }
         return rows;
     }
@@ -40,7 +52,8 @@ public static class ResultQueryEngine
         ResultFieldKind field,
         SimulationMesh mesh,
         int i,
-        SimulationFrame frame
+        SimulationFrame frame,
+        LatticeDerivedFields? derived
     ) =>
         field switch
         {
@@ -55,6 +68,33 @@ public static class ResultQueryEngine
             ResultFieldKind.VelocityX => frame.Velocity[i].X,
             ResultFieldKind.VelocityY => frame.Velocity[i].Y,
             ResultFieldKind.VelocityZ => frame.Velocity[i].Z,
+            ResultFieldKind.EquivalentStrain => derived!.EquivalentStrain[i],
+            ResultFieldKind.EquivalentStress => derived!.EquivalentStressPa[i],
+            ResultFieldKind.YieldSafetyFactor => derived!.YieldSafetyFactor[i],
             _ => 0.0,
         };
+
+    public static string Unit(ResultFieldKind field) =>
+        field switch
+        {
+            ResultFieldKind.DisplacementMagnitude
+            or ResultFieldKind.PositionX
+            or ResultFieldKind.PositionY
+            or ResultFieldKind.PositionZ => "m",
+            ResultFieldKind.Speed
+            or ResultFieldKind.VelocityX
+            or ResultFieldKind.VelocityY
+            or ResultFieldKind.VelocityZ => "m/s",
+            ResultFieldKind.EquivalentStress => "Pa",
+            ResultFieldKind.Damage
+            or ResultFieldKind.EquivalentStrain
+            or ResultFieldKind.YieldSafetyFactor => "-",
+            _ => "-",
+        };
+
+    private static bool RequiresDerivedField(ResultFieldKind field) =>
+        field
+            is ResultFieldKind.EquivalentStrain
+                or ResultFieldKind.EquivalentStress
+                or ResultFieldKind.YieldSafetyFactor;
 }

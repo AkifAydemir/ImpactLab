@@ -5,17 +5,23 @@ public sealed record ContactSettings
     public static ContactSettings Default { get; } = new();
     public double NormalStiffnessNPerM { get; init; } = 2.0e7;
     public double NormalDampingNsPerM { get; init; } = 2.0e3;
+    public double TangentialStiffnessNPerM { get; init; } = 5.0e6;
     public double TangentialDampingNsPerM { get; init; } = 5.0e2;
     public double StaticFrictionCoefficient { get; init; } = 0.35;
     public double DynamicFrictionCoefficient { get; init; } = 0.25;
     public double TangentialSlipSpeedMPerSec { get; init; } = 0.03;
     public double NodeRadiusScale { get; init; } = 0.48;
     public double BroadPhasePaddingScale { get; init; } = 1.25;
+    public string CalibrationSource { get; init; } = "";
+    public string CalibrationReferenceUri { get; init; } = "";
+    public string CalibrationTestId { get; init; } = "";
 
     public void Validate()
     {
         if (NormalStiffnessNPerM <= 0.0)
             throw new InvalidOperationException("Contact stiffness must be positive.");
+        if (TangentialStiffnessNPerM <= 0.0)
+            throw new InvalidOperationException("Tangential contact stiffness must be positive.");
         if (NormalDampingNsPerM < 0.0 || TangentialDampingNsPerM < 0.0)
             throw new InvalidOperationException("Contact damping cannot be negative.");
         if (StaticFrictionCoefficient < 0.0 || DynamicFrictionCoefficient < 0.0)

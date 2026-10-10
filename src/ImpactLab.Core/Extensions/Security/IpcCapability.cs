@@ -10,4 +10,5 @@ public enum IpcCapability
     AddReportSection = 8,
     RegisterImporter = 16,
     RegisterBackend = 32,
+    RegisterPhysicsModel = 64,
 }

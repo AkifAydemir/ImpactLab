@@ -23,7 +23,7 @@ public sealed class StrainDamageModel : IDamageModel
         var material = spring.Material;
         var yieldScale = spring.Interface?.YieldStrainScale ?? 1.0;
         var failureScale = spring.Interface?.FailureStrainScale ?? 1.0;
-        var yield = material.YieldStrain * yieldScale;
+        var yield = material.EffectiveYieldStrain * yieldScale;
         var failure = material.FailureStrain * failureScale;
         var magnitude = Math.Abs(strain);
         if (magnitude <= yield)
