@@ -9,6 +9,10 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        var workArea = SystemParameters.WorkArea;
+        Width = Math.Min(Width, workArea.Width);
+        Height = Math.Min(Height, workArea.Height);
+        MaxHeight = workArea.Height;
         DataContext = new ProductShellViewModel();
     }
 

@@ -14,7 +14,7 @@
         <SolidColorBrush x:Key="StrongBorderBrush" Color="#495361" />
         <SolidColorBrush x:Key="TextBrush" Color="#E8ECF1" />
         <SolidColorBrush x:Key="MutedTextBrush" Color="#9DA7B3" />
-        <SolidColorBrush x:Key="AccentBrush" Color="#4F8EDC" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#708498" />
         <SolidColorBrush x:Key="SuccessBrush" Color="#65B88A" />
         <SolidColorBrush x:Key="WarningBrush" Color="#D9A657" />
 
@@ -28,12 +28,20 @@
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
-        <Style x:Key="PageTitleStyle" TargetType="TextBlock">
+        <Style
+            x:Key="PageTitleStyle"
+            TargetType="TextBlock"
+            BasedOn="{StaticResource {x:Type TextBlock}}"
+        >
             <Setter Property="FontSize" Value="22" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="0,0,0,4" />
         </Style>
-        <Style x:Key="SectionTitleStyle" TargetType="TextBlock">
+        <Style
+            x:Key="SectionTitleStyle"
+            TargetType="TextBlock"
+            BasedOn="{StaticResource {x:Type TextBlock}}"
+        >
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="0,8,0,6" />
@@ -64,8 +72,8 @@
             TargetType="Button"
             BasedOn="{StaticResource {x:Type Button}}"
         >
-            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Background" Value="{StaticResource RaisedPanelBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource StrongBorderBrush}" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="16,7" />
         </Style>
@@ -96,6 +104,75 @@
             <Setter Property="Background" Value="{StaticResource InputBrush}" />
             <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton
+                                Focusable="False"
+                                IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                            >
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border
+                                            Background="{StaticResource InputBrush}"
+                                            BorderBrush="{StaticResource StrongBorderBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="3"
+                                        >
+                                            <TextBlock
+                                                Text="▾"
+                                                HorizontalAlignment="Right"
+                                                Margin="0,0,10,0"
+                                            />
+                                        </Border>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter
+                                x:Name="SelectedContent"
+                                Margin="8,5,28,5"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                Content="{TemplateBinding SelectionBoxItem}"
+                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                            />
+                            <Popup
+                                x:Name="PART_Popup"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                Placement="Bottom"
+                                AllowsTransparency="True"
+                                Focusable="False"
+                            >
+                                <Border
+                                    Background="{StaticResource PanelBrush}"
+                                    BorderBrush="{StaticResource StrongBorderBrush}"
+                                    BorderThickness="1"
+                                    MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                >
+                                    <ScrollViewer MaxHeight="320" CanContentScroll="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="DisplayMemberPath" Value="DisplayName">
+                                <Setter TargetName="SelectedContent" Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock
+                                                Text="{Binding DisplayName}"
+                                                TextTrimming="CharacterEllipsis"
+                                            />
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
         <Style TargetType="ComboBoxItem">
             <Setter Property="Background" Value="{StaticResource PanelBrush}" />

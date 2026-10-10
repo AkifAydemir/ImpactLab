@@ -6,13 +6,15 @@
 
 [Türkçe](README.tr.md)
 
+[First successful session & troubleshooting](docs/GETTING_STARTED.md) · [Architecture](docs/ARCHITECTURE.md) · [Validation](docs/VALIDATION.md)
+
 **A local Windows engineering workbench for impact simulation, continuum mechanics, thermal coupling, experiments, and reproducible verification.**
 
 ImpactLab turns an engineering scenario into a traceable workflow: define geometry and materials, apply loads and boundaries, select a numerical backend, solve, inspect fields and probes, compare experiments, and export a deterministic report package. The desktop shell is WPF; the numerical and workflow layers are split into reusable .NET libraries and isolated worker processes.
 
 > Personal engineering project started during high school. It is published as an experimental workbench and learning platform—not as a certified FEA product or a replacement for validated commercial solvers.
 
-![Completed Quick Impact Sandbox run with 3D result and telemetry in the Windows Release build](docs/assets/impactlab-quick-impact-release-clean.jpg)
+![Completed Quick Impact Sandbox run with 3D result and telemetry in the Windows Release build](docs/assets/impactlab-preview-20261010.png)
 
 *Real Release-build capture: a completed Quick Impact Sandbox run with its 3D result and telemetry visible. The image is a software demonstration, not evidence of physical accuracy.*
 
@@ -50,7 +52,11 @@ unmeasured real-world impact.
 
 ## Verified status
 
-The current Windows release candidate was rebuilt from source on .NET 8 with analyzers and warnings-as-errors enabled.
+Latest local check: **156/156 tests passed**, Release build with **0 warnings/errors**;
+see [2026-10-10 review](docs/REVIEW_2026-10-10.md). Create a portable preview with
+`powershell -NoProfile -File tools/package.ps1` (unsigned; clean-machine testing still required).
+
+The table below records the earlier Windows release-candidate validation on .NET 8 with analyzers and warnings-as-errors enabled; its test count is historical.
 
 | Gate | Result |
 | --- | --- |

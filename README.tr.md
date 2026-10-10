@@ -6,6 +6,12 @@
 
 [English](README.md)
 
+[İlk kullanım ve sorun giderme](docs/GETTING_STARTED.md) · [Son yerel doğrulama](docs/REVIEW_2026-10-10.md)
+
+Kaynak derleme/test: `powershell -NoProfile -File tools/check.ps1`.
+Taşınabilir önizleme ZIP'i üretme: `powershell -NoProfile -File tools/package.ps1`.
+Paketler imzasız önizlemedir; temiz bilgisayarda kurulum doğrulaması yapılmış sayılmaz.
+
 **Darbe simülasyonu, continuum mechanics, termal bağlaşım, deneyler ve tekrarlanabilir doğrulama için yerel bir Windows mühendislik çalışma ortamı.**
 
 ImpactLab, bir mühendislik senaryosunu izlenebilir bir akışa dönüştürür: geometri ve malzemeleri tanımlama, yük ve sınır koşullarını uygulama, sayısal backend seçme, çözme, alanları ve probe’ları inceleme, deneyleri karşılaştırma ve deterministik rapor paketi üretme. Masaüstü kabuğu WPF’tir; sayısal ve iş akışı katmanları yeniden kullanılabilir .NET kütüphanelerine ve yalıtılmış worker process’lerine ayrılmıştır.

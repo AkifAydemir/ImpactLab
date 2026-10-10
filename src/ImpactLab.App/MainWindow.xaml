@@ -4,11 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:ImpactLab.App.Controls"
     Title="ImpactLab Engineering Workbench"
-    Width="1440"
-    Height="850"
+    Width="1360"
+    Height="780"
     MinWidth="1120"
     MinHeight="700"
     WindowStartupLocation="CenterScreen"
+    Foreground="{StaticResource TextBrush}"
     AutomationProperties.Name="ImpactLab engineering workbench"
     KeyboardNavigation.TabNavigation="Cycle"
 >
@@ -62,7 +63,7 @@
                         />
                         <TextBlock Text="Release build · net8.0" FontSize="11" Margin="0,3,0,0" />
                         <TextBlock
-                            Text="120 automated tests"
+                            Text="Verification tools included"
                             FontSize="11"
                             Foreground="{StaticResource SuccessBrush}"
                         />
