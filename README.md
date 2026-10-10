@@ -14,7 +14,7 @@ ImpactLab turns an engineering scenario into a traceable workflow: define geomet
 
 > Personal engineering project started during high school. It is published as an experimental workbench and learning platform—not as a certified FEA product or a replacement for validated commercial solvers.
 
-![Completed Quick Impact Sandbox run with 3D result and telemetry in the Windows Release build](docs/assets/impactlab-preview-20261010.png)
+![ImpactLab Windows Release start workspace with the restrained steel palette, quick-impact setup, assembly and built-in examples](docs/assets/impactlab-palette-20261010.png)
 
 *Real Release-build capture: a completed Quick Impact Sandbox run with its 3D result and telemetry visible. The image is a software demonstration, not evidence of physical accuracy.*
 

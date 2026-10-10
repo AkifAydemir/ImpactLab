@@ -18,7 +18,7 @@ ImpactLab, bir mühendislik senaryosunu izlenebilir bir akışa dönüştürür:
 
 > Lise yıllarımda başladığım kişisel bir mühendislik projesi. Sertifikalı bir FEA ürünü veya doğrulanmış ticari solver’ların yerine geçen bir araç olarak değil, deneysel bir çalışma ortamı ve öğrenme platformu olarak yayımlanıyor.
 
-![Windows Release build’de tamamlanmış Quick Impact Sandbox koşusu, 3D sonuç ve telemetri](docs/assets/impactlab-quick-impact-release-clean.jpg)
+![Sade çelik paletle ImpactLab Windows Release başlangıç ekranı: hızlı darbe, montaj ve hazır örnekler](docs/assets/impactlab-palette-20261010.png)
 
 *Gerçek Release-build görüntüsü: tamamlanmış bir Quick Impact Sandbox çalışmasının 3B sonuç görünümü. Görüntü fiziksel doğruluk kanıtı değildir.*
 
