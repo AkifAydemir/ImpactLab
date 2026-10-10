@@ -16,7 +16,38 @@ ImpactLab turns an engineering scenario into a traceable workflow: define geomet
 
 ![ImpactLab Windows Release start workspace with the restrained steel palette, quick-impact setup, assembly and built-in examples](docs/assets/impactlab-palette-20261010.png)
 
-*Real Release-build capture: a completed Quick Impact Sandbox run with its 3D result and telemetry visible. The image is a software demonstration, not evidence of physical accuracy.*
+*Current Release-build Start workspace. This capture demonstrates the interface, not a completed solve or evidence of physical accuracy.*
+
+## Engineering work implemented in this repository
+
+The central engineering task is connecting numerical mechanics to a usable,
+inspectable application—not just displaying a precomputed animation.
+
+- **Scenario-to-mesh pipeline:** [`SceneMeshCompiler`](src/ImpactLab.Core/Scene/SceneMeshCompiler.cs)
+  compiles a multi-part scene into the lattice representation. Parts keep their
+  identities so material interfaces and contact rules can be reasoned about
+  separately from the displayed geometry.
+- **Numerical implementation:** [`ExplicitLatticeSolver`](src/ImpactLab.Core/Physics/ExplicitLatticeSolver.cs)
+  advances the lattice state; the repository also contains continuum assembly,
+  sparse matrix implementations and constitutive models. WPF is the interaction
+  layer, not the numerical solver. The implemented model families do not imply
+  equal maturity or validation coverage.
+- **Fragment/contact reliability:** separated-body state and contact transfer
+  have dedicated regression cases. For example,
+  [`CoarseFragmentContactTests`](tests/ImpactLab.Core.Tests/CoarseFragmentContactTests.cs)
+  checks equal-and-opposite momentum transfer in a small controlled problem.
+  This is a narrower, testable claim than universal fracture prediction.
+- **Reproducible outputs:**
+  [`DeterministicReportPackageTests`](tests/ImpactLab.Core.Tests/DeterministicReportPackageTests.cs)
+  exercises the report-package contract, making exported evidence another
+  testable component rather than an untracked screenshot.
+
+**Design trade-off:** explicit lattice dynamics provides a practical path for
+interactive impact experiments, but its resolution, time step, material law and
+contact assumptions matter. The project therefore exposes numerical diagnostics
+and preserves backend boundaries instead of treating a visually convincing run
+as validation. The latest local suite passed **156 tests**; predictive use still
+requires independent measurements, calibration and convergence studies.
 
 ## What makes it interesting
 
@@ -122,7 +153,7 @@ cases can run through a versioned worker protocol with heartbeats, bounded
 concurrency, and hashed artifacts. Extensions that are not trusted for
 in-process loading use a separate host and explicit compatibility/trust checks.
 Versioned document migrations and report fixtures keep older inputs and
-generated artifacts testable. The 111 tests and six integrity audits cover
+generated artifacts testable. The regression suite and six integrity audits cover
 many of these contracts, while physical validation still needs convergence,
 material calibration, and comparison with independent measurements.
 
@@ -142,9 +173,9 @@ material calibration, and comparison with independent measurements.
 
 1. Open **Simulation → Quick Impact Sandbox** in the Windows Release app.
 2. Start with **Mesh cell size** at `20 mm` and **Time step** at `1.5 µs`; inspect the explicit time-step gate in the run report.
-3. Select **Run Quick Impact**. The representative run captured above completed with a 3D scene and 31 telemetry samples.
+3. Select **Run Quick Impact**. An earlier representative run completed with a 3D scene and 31 telemetry samples; the current screenshot above shows the Start workspace instead.
 
-For a second UI path, select the built-in **Plate impact study**, keep **Explicit Lattice Dynamics**, and choose **Solve**. The Release app completed this coarse preset and opened **Results Explorer** at frame `15`. This verifies the workflow transition and result-row generation, not meaningful impact response or physical accuracy. The stronger visual demonstration remains Quick Impact above.
+For a second UI path, select the built-in **Plate impact study**, keep **Explicit Lattice Dynamics**, and choose **Solve**. The Release app completed this coarse preset and opened **Results Explorer** at frame `15`. This verifies the workflow transition and result-row generation, not meaningful impact response or physical accuracy. The Quick Impact path provides a separate interactive visual demonstration.
 
 ## Quick start
 

@@ -20,7 +20,33 @@ ImpactLab, bir mühendislik senaryosunu izlenebilir bir akışa dönüştürür:
 
 ![Sade çelik paletle ImpactLab Windows Release başlangıç ekranı: hızlı darbe, montaj ve hazır örnekler](docs/assets/impactlab-palette-20261010.png)
 
-*Gerçek Release-build görüntüsü: tamamlanmış bir Quick Impact Sandbox çalışmasının 3B sonuç görünümü. Görüntü fiziksel doğruluk kanıtı değildir.*
+*Güncel Release başlangıç ekranı. Bu görüntü arayüzü gösterir; tamamlanmış bir çözüm veya fiziksel doğruluk kanıtı değildir.*
+
+## Bu repoda geliştirilen mühendislik
+
+Temel iş, önceden hazırlanmış bir animasyonu göstermek değil; sayısal mekaniği
+kullanılabilir ve incelenebilir bir uygulama akışına bağlamaktır.
+
+- **Senaryodan mesh'e geçiş:** [SceneMeshCompiler](src/ImpactLab.Core/Scene/SceneMeshCompiler.cs)
+  çok parçalı sahneyi lattice temsiline derler. Parça kimlikleri korunduğundan
+  malzeme arayüzleri ve temas kuralları görüntü geometrisinden ayrı incelenebilir.
+- **Sayısal çekirdek:** [ExplicitLatticeSolver](src/ImpactLab.Core/Physics/ExplicitLatticeSolver.cs)
+  lattice durumunu ilerletir. Repoda continuum assembly, seyrek matrisler ve
+  malzeme modelleri de bulunur. WPF etkileşim katmanıdır, fizik çözücüsü değildir.
+  Farklı model ailelerinin bulunması hepsinin aynı olgunlukta olduğunu göstermez.
+- **Parça ve temas aktarımı:** [CoarseFragmentContactTests](tests/ImpactLab.Core.Tests/CoarseFragmentContactTests.cs)
+  küçük kontrollü bir problemde eşit ve zıt momentum aktarımını denetler.
+  Ayrılmış parça durumunun ve temasın sınanması, her gerçek kırılmayı doğru
+  tahmin etme iddiasından daha dar ve doğrulanabilir bir çalışmadır.
+- **Tekrarlanabilir raporlar:** [DeterministicReportPackageTests](tests/ImpactLab.Core.Tests/DeterministicReportPackageTests.cs)
+  rapor paketi sözleşmesini sınar; dışa aktarılan kanıt da test edilebilir bir
+  yazılım bileşeni olarak ele alınır.
+
+**Yöntemin bedeli:** explicit lattice, etkileşimli darbe deneyleri için pratik
+bir yol sunar; ancak çözünürlük, zaman adımı, malzeme yasası ve temas kabulleri
+sonucu etkiler. Bu yüzden sayısal tanılar görünür tutulur ve backend sınırları
+korunur. Son yerel kontrolde **156 test geçti**; gerçek tahmin kullanımı için
+bağımsız ölçümler, kalibrasyon ve yakınsama çalışmaları hâlâ gereklidir.
 
 ## Mühendislik açısından içeriği
 
@@ -57,7 +83,9 @@ anlamına gelmez.
 
 ## Doğrulanmış durum
 
-Mevcut Windows release adayı .NET 8 ile; analyzer’lar ve warnings-as-errors açıkken kaynaktan yeniden build edildi.
+Son yerel kontrolde **156/156 test geçti**, Release derlemesi **0 uyarı/hata**
+ile tamamlandı; [2026-10-10 kaydına](docs/REVIEW_2026-10-10.md) bakın.
+Aşağıdaki tablo önceki release adayı doğrulamasıdır; 111 test sayısı tarihseldir.
 
 | Kapı | Sonuç |
 | --- | --- |
@@ -122,7 +150,7 @@ Experiment vakaları, heartbeat, sınırlandırılmış eşzamanlılık ve hash�
 artifact’ları olan sürümlenmiş worker protokolünden geçebilir. Process içinde
 çalışması için güvenilmeyen extension’lar ayrı host ve açık uyumluluk/güven
 kontrolleri kullanır. Sürümlenmiş belge migration’ları ve rapor fixture’ları
-eski girdileri ve üretilen çıktıları test edilebilir tutar. 111 test ve altı
+eski girdileri ve üretilen çıktıları test edilebilir tutar. Regresyon paketi ve altı
 bütünlük denetimi bu sözleşmelerin çoğunu kapsar; fiziksel doğrulama içinse
 yakınsama, malzeme kalibrasyonu ve bağımsız ölçümlerle karşılaştırma gerekir.
 
@@ -142,9 +170,9 @@ yakınsama, malzeme kalibrasyonu ve bağımsız ölçümlerle karşılaştırma 
 
 1. Windows Release uygulamasında **Simulation → Quick Impact Sandbox** bölümünü açın.
 2. Başlangıç için **Mesh cell size** değerini `20 mm`, **Time step** değerini `1.5 µs` yapın; koşu raporundaki explicit time-step kapısını kontrol edin.
-3. **Run Quick Impact** seçeneğini çalıştırın. Yukarıdaki gerçek yakalamada 3B sahne ve 31 telemetry örneği oluştu.
+3. **Run Quick Impact** seçeneğini çalıştırın. Önceki bir örnek koşuda 3B sahne ve 31 telemetry örneği oluştu; yukarıdaki güncel görüntü ise başlangıç ekranını gösterir.
 
-İkinci bir UI akışı için yerleşik **Plate impact study** örneğini seçin, **Explicit Lattice Dynamics** backend’ini koruyun ve **Solve** seçeneğine basın. Release uygulaması bu kaba çözünürlüklü örneği tamamlayıp `15` numaralı karede **Results Explorer** bölümünü açtı. Bu gözlem iş akışı geçişini ve sonuç satırlarının oluşmasını doğrular; anlamlı bir darbe cevabı veya fiziksel doğruluk iddiası taşımaz. Daha açıklayıcı ürün görüntüsü yukarıdaki Quick Impact ekranıdır.
+İkinci bir UI akışı için yerleşik **Plate impact study** örneğini seçin, **Explicit Lattice Dynamics** backend’ini koruyun ve **Solve** seçeneğine basın. Release uygulaması bu kaba çözünürlüklü örneği tamamlayıp `15` numaralı karede **Results Explorer** bölümünü açtı. Bu gözlem iş akışı geçişini ve sonuç satırlarının oluşmasını doğrular; anlamlı bir darbe cevabı veya fiziksel doğruluk iddiası taşımaz. Quick Impact yolu ayrıca etkileşimli bir görsel demo sunar.
 
 ## Hızlı başlangıç
 
